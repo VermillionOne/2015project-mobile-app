@@ -19,7 +19,7 @@ mkdir ~/www
 mkdir ~/www/shindiig
 mkdir ~/www/shindiig/mobile-app-appgyver
 cd ~/www/shindiig/mobile-app-appgyver/
-git clone git@bitbucket.org:shindiig/mobile-app-appgyver.git repo
+git clone git@github.com:VermillionOne/2015project-mobile-app.git
 cd repo
 steroids update
 steroids connect
@@ -75,7 +75,7 @@ chrome
 
 ### Deploying this app to AppGyver Share (This creates a config/cloud.json file)
 ```bash
-cd ~/www/shindiig/mobile-app-appgyver/repo/
+cd ~/www/steroids-app/mobile-app-appgyver/repo/
 steroids login
 steroids deploy
 ```
