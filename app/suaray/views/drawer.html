@@ -1,0 +1,84 @@
+<html>
+  <body class="suaray-drawer" ng-controller="DrawerController">
+    <a class="drawer-profile-link" ng-click="showProfile()" onclick="supersonic.ui.drawers.close()">
+      <div class="drawer-profile-pic">
+
+        <img ng-src="{{auth.avatar}}" ng-if="auth.avatar !== ''" ng-model="user.newAvatar" ng-show="avatar === true">
+
+      </div>
+      <div class ="drawer-name-txt" ng-model="fullName">{{ fullName }}</div>
+    </a>
+<!--
+    <div class="drawer-btn-list drawer-search-sect" ng-show="searchable === true">
+      <form data-role="drawer-search-form">
+        <input class="drawer-search" type="text" placeholder="&nbsp;&nbsp;Search Events" id="events.name" ng-model="events.name" onFocus="window.scrollTo(0, 0);">
+      </form>
+    </div> -->
+
+    <div class="drawer-btn-list" ng-click="showSearch()">
+      <div class="drawer-icon"><i class="fa fa-search"></i></div>
+      <div class="drawer-txt">Search</div>
+    </div>
+
+    <div class="drawer-btn-list" ng-click="showFeatured()" ng-if="featured === true">
+      <div class="drawer-icon"><i class="fa fa-home"></i></div>
+      <div class="drawer-txt">Featured</div>
+    </div>
+
+    <div class="drawer-btn-list" ng-click="showCategory()" ng-if="categories === true">
+      <div class="drawer-icon"><i class="fa fa-tags"></i></div>
+      <div class="drawer-txt">Categories</div>
+    </div>
+
+    <div class="drawer-btn-list" ng-click="showMap()" ng-if="map === true">
+      <div class="drawer-icon"><i class="fa fa-map-marker"></i></div>
+      <div class="drawer-txt">Map</div>
+    </div>
+
+    <div class="drawer-btn-list" ng-click="showCreate()" ng-if="create === true">
+      <div class="drawer-icon"><i class="super-plus-circled"></i></div>
+      <div class="drawer-txt">Create</div>
+    </div>
+
+    <div class="drawer-btn-list" ng-click="showCheckin()" ng-if="checkin === true">
+      <div class="drawer-icon"><i class="super-checkmark-circled"></i></div>
+      <div class="drawer-txt">Check-In</div>
+    </div>
+
+    <div class="drawer-btn-list" ng-click="showMyTickets()" ng-if="mytickets === true">
+      <div class="drawer-icon"><i class="fa fa-ticket"></i></div>
+      <div class="drawer-txt">My Tickets</div>
+    </div>
+
+    <div class="drawer-btn-list" ng-click="showFriends()" ng-if="friends === true">
+      <div class="drawer-icon"><i class="fa fa-users"></i></div>
+      <div class="drawer-txt">Friends</div>
+    </div>
+
+    <div class="drawer-btn-list" ng-click="showNotifications()" ng-if="notifications === true">
+      <div class="drawer-icon"><i class="fa fa-comments"></i></div>
+      <div class="drawer-txt">Notifications <span class="badge badge-balanced drawer-badge" ng-show="notificationsCount > 0" ng-model="notificationsCount">{{ notificationsCount }}</span></div>
+    </div>
+
+    <div class="drawer-btn-list" ng-click="showCrowd()" ng-if="crowdsurf === true">
+      <div class="drawer-icon"><i class="fa fa-search-plus"></i></div>
+      <div class="drawer-txt">Crowd Surf</div>
+    </div>
+
+    <div class="drawer-btn-list" ng-click="showSettings()" ><!-- ng-if="settings === true" -->
+      <div class="drawer-icon"><i class="fa fa-cog"></i></div>
+      <div class="drawer-txt">Settings</div>
+    </div>
+
+    <div class="drawer-btn-list" ng-click="doLogout()" ng-if="logout === true">
+      <div class="drawer-icon"><i class="fa fa-sign-out"></i></div>
+      <div class="drawer-txt">Sign Out</div>
+    </div>
+
+    <script>
+      document.addEventListener("touchmove", function(e){
+        e.preventDefault();
+      });
+    </script>
+  </body>
+</html>

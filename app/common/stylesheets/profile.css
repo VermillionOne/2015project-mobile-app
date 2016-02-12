@@ -1,0 +1,413 @@
+/* Profile Page */
+.timezone-select {
+  margin-left: 20px;
+}
+.profile-usename-event{
+  float: left;
+  width: 50%;
+}
+button.button.edit-profile-button.button-small {
+  font-weight: 500;
+  background-color: #3496cf;
+  border-radius: 5px;
+  margin: 10px 0px 0px;
+  padding: 2px 10px;
+  border: 0px solid;
+  text-transform: capitalize;
+  color: #ffffff;
+  font-size: 1em;
+}
+label.item-input-wrapper input {
+  width: 100%;
+}
+.profile-comment-delete {
+  position: absolute;
+  border-radius: 20px;
+  padding: 8px 10px;
+  background-color: #F77A7A;
+  border: 0px solid;
+  right: 0;
+  top: 5px;
+}
+.event-title{
+  background-color: #164A96;
+  padding: 5px;
+  width: 75px;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 100;
+  float: right;
+  text-align: center;
+}
+.profile-comments-label{
+  padding: 0px;
+}
+.profile-comments-sect{
+  position: relative;
+  width: 100%;
+  padding: 0 0 15px 0;
+  border-bottom: 1px solid #cccccc;
+  margin: 0 0 15px 0;
+}
+.profile-comment-postdate{
+  color: #9fa9b5;
+  font-size: 10px;
+  font-weight: 100;
+}
+.profile-comments-desc{
+  width: 87%;
+  color: #5e6773;
+  font-size: 13px;
+  font-weight: 100;
+}
+.public-profile-comments-desc {
+  width: 100%;
+}
+.profile-comments-event-title{
+  color: #3496cf;
+  font-size: 16px;
+  font-weight: 700;
+}
+.profile-comments-username{
+  color: #000000;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+}
+.profile-info{
+  padding: 20px 0;
+  border-bottom: solid 1px #ccc;
+  width: 100%;
+  overflow:auto;
+}
+.profile-pic-main {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.5);
+  overflow: hidden;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  max-width: 122px;
+  max-height: 122px;
+  float: right;
+}
+.profile-pic-main.newAvatar{
+  position: absolute;
+  z-index: 10;
+}
+.profile-pic-shading {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  border-radius: 50%;
+  max-height: 122px;
+  max-width: 122px;
+}
+.profile-pic-main img{
+  width: 100%;
+  height: 100%;
+}
+.profile-pic-main img.newAvatar {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+}
+.profile-pic-sect{
+  width: 40%;
+  padding: 0 3%;
+  display:  inline-block;
+  vertical-align: top;
+  height: 130px;
+}
+.profile-presonal-info-sect{
+  width: 50%;
+  padding: 10px 0 0 0;
+  display: inline-block;
+  vertical-align: top;
+}
+.profile-personal-info{
+  color: #000;
+  font-weight: 100;
+}
+.profile-personal-info-name{
+  font-size: 16px;
+  line-height: 24px;
+  text-transform: capitalize;
+  font-weight: 700;
+}
+.profile-personal-info-txt{
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+.profile-personal-info-subtxt{
+  font-size: 12px;
+  color: #546070;
+  font-weight: 100;
+}
+.activity-icons{
+  color: #9fa9b5;
+  font-weight: 100;
+  font-size: 9px;
+  text-align: center;
+}
+.activity-wall-title{
+  font-weight: 700;
+  font-size: 18px;
+  color: #333333;
+  padding: 10px 0;
+  text-align: center;
+  text-transform: capitalize;
+}
+.col-holder{
+  overflow: auto;
+  padding: 0px;
+}
+#activity-wall-sect{
+  padding: 20px 0px;
+  border-top: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+}
+.activity-comment-wall{
+  padding: 20px 10px;
+}
+.activity-comment{
+  padding: 20px 10px;
+  border-bottom: 1px solid #cccccc;
+}
+.activity-comment .profile-pic-main{
+  width: 56px;
+  height: 56px;
+  position: absolute;
+  z-index: 10;
+}
+.activity-comment .profile-pic-main img{
+  position: absolute;
+  /* top: 50%;
+  left: 50%;
+  width: 150%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%); */
+}
+.activity-post-btn{
+  padding: 0 10px;
+  margin: 10px 0px -10px;
+}
+/****************************\
+|- Profile Calendar styling -|
+\****************************/
+.profile-calendar{
+  padding: 10px 0px 0px 0px;
+  min-height: 300px;
+  height: auto;
+  text-transform: capitalize;
+}
+.profile-calendar-title{
+  font-weight: 700;
+  font-size: 18px;
+  color: #000;
+  padding: 10px 0 0 0;
+  text-align: center;
+  margin: auto;
+}
+div.fc-day-grid-container.fc-scroller{
+  min-height:400px;
+}
+.fc-toolbar h2{
+  font-weight: 100;
+  font-size: 16px;
+  color: #556170;
+}
+.fc-toolbar .fc-center {
+  text-align: right;
+  color: #556170;
+  font-size: 10px;
+}
+.fc-state-default {
+  background-color: #fff ;
+  background-image: none ;
+  background-repeat: none;
+  border: none;
+  box-shadow: none;
+  color: #333;
+  text-shadow: none;
+
+}
+.fc td, .fc th {
+  border-style: none;
+  border-width: 0px ;
+  padding: 0;
+  font-weight: 300;
+  vertical-align: center;
+  text-align: center;
+}
+.fc-content img {
+  border-radius: 50%;
+  width: 75px;
+  padding: 10px;
+}
+.fc-content i.fa {
+  font-size: 2.5em;
+}
+.fc-content .fc-title {
+  font-size: 2.25em;
+}
+.fc-content .fc-time {
+  font-size: 2.25em;
+}
+.fc-toolbar {
+  text-align: center;
+  margin: 15px 0px;
+  padding: 0px 0%;
+}
+.fc .fc-toolbar > .fc-center > h2 {
+  float: left;
+  font-weight: 500;
+  text-align: center;
+  width: 50%;
+  margin-left: 0px;
+  font-size: 1.75em;
+  color: #3496cf;
+}
+.fc-center {
+  width: 100%;
+}
+button.fc-button.fc-state-default.fc-corner-left.fc-corner-right {
+  background: #3496cf;
+  color: #fff;
+  border-radius: 1.25em;
+}
+.fc-toolbar .fc-right {
+  float: right;
+  margin: -50px 7% 0px 0px;
+}
+button.fc-month-button.fc-button.fc-state-default.fc-corner-left.fc-corner-right {
+  width: 65px;
+  padding: 5px;
+  color: #fff;
+  background-color: #3496cf;
+  text-transform: capitalize;
+  border-radius: 4px;
+  font-weight: 300;
+  font-size: .95em;
+}
+.fc .fc-toolbar > .fc-center > button.fc-prev-button.fc-button.fc-state-default.fc-corner-left.fc-corner-right {
+  margin: 0px 0px 0px 15%;
+  width: 10%;
+}
+.fc .fc-toolbar > .fc-center > button.fc-next-button.fc-button.fc-state-default.fc-corner-left.fc-corner-right {
+  width: 10%;
+  margin-left: 0px;
+}
+.fc-view.fc-agendaDay-view.fc-agenda-view thead tr {
+  border-bottom: 1px solid #D4D4D4;
+}
+.fc-ltr .fc-basic-view .fc-day-number {
+  text-align: center;
+}
+th.fc-day-header.fc-widget-header {
+  font-weight: 700;
+}
+th.fc-axis.fc-widget-header {
+  border-right: 1px solid #d4d4d4;
+}
+td.fc-axis.fc-widget-content {
+  border-right: 1px solid #d4d4d4;
+}
+.fc-unthemed .fc-today {
+  background: rgba(230, 246, 255, 1);
+  border-radius: 4px;
+}
+/****************************\
+|-   Short Events styling   -|
+\****************************/
+.fc-short-grid-event .fc-content {
+  padding: 20px;
+}
+.fc-short-grid-event .fc-content img {
+  width: 40px;
+  float: left;
+  padding: 0;
+}
+.fc-short-grid-event .fc-content .fc-time {
+  float: right;
+}
+.fc-short-grid-event .fc-content .fc-title {
+  float: right;
+  text-align: right;
+  max-width: 80%;
+}
+/* iPad short event */
+@media only screen
+  and (min-device-width: 768px)
+  and (max-device-width: 1024px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+  .fc-short-grid-event .fc-content .fc-title {
+    float: none !important;
+    max-width: 52%;
+    margin: auto;
+    margin-right: 200px;
+  }
+}
+/* Media Styles */
+/****************************\
+|-      Media Styles        -|
+\****************************/
+
+/* iPhone 6 */
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 667px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+
+  .fc-content i.fa {
+    font-size: 1.8em;
+  }
+  .fc-content .fc-title {
+    font-size: 1.6em;
+  }
+  .fc-content .fc-time {
+    font-size: 1.6em;
+  }
+  .fc-content img {
+    width: 75px;
+  }
+}
+/* iPad */
+@media only screen
+  and (min-device-width: 768px)
+  and (max-device-width: 1024px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+  .fc-content i.fa {
+    font-size: 4.5em;
+  }
+  .fc-content img {
+    width: 125px;
+  }
+}
+/* androids */
+@media only screen
+  and (min-device-width: 300px)
+  and (max-device-width: 700px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+  .fc-time-grid-event {
+    font-size: .5em !important;
+  }
+}
+/* Ipad Mini */
+@media only screen
+  and (min-device-width: 768px)
+  and (max-device-width: 1024px)
+  and (-webkit-min-device-pixel-ratio: 1) {
+
+  .fc-content i.fa {
+    font-size: 4.5em;
+  }
+}
+/* Profile Page End */

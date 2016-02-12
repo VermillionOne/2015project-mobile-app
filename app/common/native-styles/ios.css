@@ -1,0 +1,70 @@
+/***********************************************************
+ * These styles apply for native components on iOS.
+ * Read more about native styles at http://docs.appgyver.com
+ ***********************************************************/
+@font-face {
+    font-family: 'museosans';
+    src: url('/fonts/MuseoSans_500-webfont.eot');
+    src: url('/fonts/MuseoSans_500-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/MuseoSans_500-webfont.woff') format('woff'),
+         url('/fonts/MuseoSans_500-webfont.ttf') format('truetype'),
+         url('/fonts/MuseoSans_500-webfont.svg#museosans') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+body{
+  font-family: 'museosans';
+}
+navigation-bar {
+  background-color: #0095D2;
+  color: #ffffff;
+}
+
+navigation-bar title {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+navigation-bar button, navigation-bar back-bar-button {
+  color: #ffffff;
+  font-weight: 300;
+}
+
+/**************************************
+ *  Tab Bar
+ *************************************/
+
+tab-bar {
+  background-color: #ffffff;
+  border-top: 1px #d8d8d8 solid;
+}
+
+tab-bar tab-bar-item {
+  color: #b0b1b4;
+  font-family: "Avenir";
+  font-size: 10px;
+}
+
+tab-bar tab-bar-item:selected {
+  color: #1596f7;
+}
+
+tab-bar-item#settings {
+  background-image: url(icons/cog.svg);
+}
+
+tab-bar-item#index {
+  background-image: url(icons/home.svg);
+}
+
+tab-bar-item#internet {
+  background-image: url(icons/search.svg);
+}
+drawer-name-txt{
+  text-align: left;
+  color:#fff;
+  font-size: 18px;
+  font-family: "museosans" !important;
+  margin: 0 0 0 25%;
+}

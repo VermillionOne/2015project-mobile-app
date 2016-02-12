@@ -1,0 +1,72 @@
+<div ng-controller="MyTicketsController">
+
+  <div id = "suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class = "suaray-menu-btn drawer-button">
+      <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars"></i>
+    </div>
+
+    <div class = "suaray-menu-title">
+      My Tickets
+    </div>
+
+  </div>
+
+  <div class="suaray-body my-tickets" ng-class="{ios: iOSStyles === true}">
+
+    <div class="my-tickets-search bar bar-header item-input-inset">
+
+      <label class="item-input-wrapper">
+        <input type="search" placeholder="Search" ng-model="myTicketsSearch.$" class="my-tickets-input">
+        <span class="my-tickets-search-clear-button fa fa-times-circle" ng-show="myTicketsSearch !== null" ng-click="myTicketsSearch = null"></span>
+      </label>
+
+      <button class="button my-tickets-search-enter-button">
+        Enter
+      </button>
+
+    </div>
+
+    <table class="my-tickets-order" ng-if="ticketsPresent === true" ng-click="goToTicketReceipt(order.code)" ng-repeat="order in orders | filter:myTicketsSearch:strict"> <!--ng-repeat="ticketOrder in ticketOrders" -->
+      <col class="my-ticket-order-column-one">
+      <col class="my-ticket-order-column-two">
+      <tr>
+        <td class="my-tickets-order-info-area">
+
+          <div class="my-tickets-order-title-area">
+
+            <p class="my-tickets-order-ticket-code">{{order.code}}</p> <!-- <p>{{ ticketOrder.event.code}}</p> -->
+
+            <p class="my-tickets-order-ticket-event">@ {{order.event.title}}</p> <!-- <p>{{ ticketOrder.event.title}}</p> -->
+
+            <p class="my-tickets-order-ticket-event-start-date" ng-if='order.eventTime.start !== null'>{{order.eventTime.start | parseTimeDataFilter | date:"MMM. d, y"}}</p>
+            <p class="my-tickets-order-ticket-event-start-time-hours" ng-if='order.eventTime.start !== null'>{{order.eventTime.start | parseTimeDataFilter | date:"h:mma"}}</p>
+            <p class="my-tickets-order-ticket-event-start-time" ng-if='order.eventTime.start !== null'>Starts:</p>
+
+          </div>
+
+          <div class="my-tickets-order-ticket-type-area" ng-repeat="type in order.types"> <!-- NG-REPEAT -->
+
+            <p class="my-tickets-order-ticket-type-title">{{type.name}}</p>
+
+            <p class="my-tickets-order-ticket-type-available">Available: {{type.qty.available | number: 0}}</p>
+
+            <p class="my-tickets-order-ticket-type-used">Used: {{type.qty.used | number: 0}}</p>
+
+          </div>
+
+        </td>
+        <td class="my-tickets-order-summary-button">
+          <p class="fa fa-caret-right"></p>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Displays when there are no tickets -->
+    <div class="no-friend-message" ng-if="ticketsPresent === false">
+      <h5 class="no-friend-name text-muted">{{myTicketsError}}</h5>
+    </div>
+
+  </div>
+
+</div>

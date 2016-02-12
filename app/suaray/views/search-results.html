@@ -1,0 +1,51 @@
+<div ng-controller="SearchResultsController" class="search-results-body">
+
+  <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class = "suaray-menu-btn drawer-button">
+      <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars"></i>
+    </div>
+
+    <div class="suaray-search-menu-title">
+      <form data-role="search-results-form" ng-submit="searchFromSearchBar()" class="">
+        <input type="text" data-role="search-query" class="form-control" ng-model="query" id="events.name">
+      </form>
+    </div>
+
+    <div class="suaray-menu-btn-right filter-button">
+      <span class="to-filter-button button button-positive" ng-click="showSearch()">Filter <span class="fa fa-filter"></span></span>
+    </div>
+
+  </div>
+
+  <div class="suaray-body search-search-bg">
+    <div class="load-bar margin">
+      <div class="bar-inner"></div>
+      <div class="bar-inner"></div>
+      <div class="bar-inner"></div>
+    </div>
+    <div class="search-results hidden" ng-hide="showError === true">
+
+     <div ng-animate-children ng-if="event.featuredPhoto" class="search-results-card" ng-repeat="event in eventSearchResults" ng-click="goToEventDetail(event.id)">
+
+        <img ng-if="totalWidth === 'large'" data-role="slider-image" ng-src="{{event.featuredPhoto.url['1920x430']}}" alt="..." >
+        <img ng-if="totalWidth === 'medium'" data-role="slider-image" ng-src="{{event.featuredPhoto.url['660x320']}}" alt="..." >
+        <img ng-if="totalWidth === 'small'" data-role="slider-image" ng-src="{{event.featuredPhoto.url['460x275']}}" alt="..." >
+        <img ng-if="totalWidth === 'xSmall'" data-role="slider-image" ng-src="{{event.featuredPhoto.url['320x192']}}" alt="..." >
+
+        <div class="search-results-event-title-sect">
+          <h3 class="search-event-title">{{event.title}}</h3>
+          <h2 class="search-event-city">{{event.city}}</h2>
+          <p class="search-event-date">{{event.startDate || "No Upcoming Dates"}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card hidden">
+      <div class="item item-text-wrap search-error">
+        {{error}}
+    </div>
+
+  </div>
+
+</div>

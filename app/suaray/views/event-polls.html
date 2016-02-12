@@ -1,0 +1,99 @@
+<div ng-controller="EventPollsController">
+  <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class="suaray-menu-btn" ng-show="page === 'polls'">
+      <super-navigate-back>
+        <i class="super-arrow-left-c"></i>
+      </super-navigate-back>
+    </div>
+    <div class="suaray-menu-btn" ng-click="showPolls()" ng-show="page === 'create'"><span class="fa fa-angle-left"></span></div>
+
+    <div class="suaray-menu-btn" ng-click="showPolls()" ng-show="page === 'answers'"><span class="fa fa-angle-left"></span></div>
+
+    <div class="suaray-menu-title ticket-title">
+      Event Polls 
+    </div>
+    <div class="suaray-menu-btn-right" ng-click="showPollsForm()"><span class="fa super-plus-circled"></span></div>
+  </div>
+
+  <div class="suaray-body check-in-body" ng-class="{ios: iOSStyles === true}">
+    <div class="list page-container">
+      <div class="polls-background" data-role="full-screen-height" ng-show="page === 'polls'">
+        <div class="list" ng-model="polls" ng-if="polls && polls.length > 0">
+          <div class="item poll-item" ng-repeat="poll in polls" ng-click="editPoll(poll)">
+            <h3>{{ poll.question }}</h3>
+            <label>Choices:</label>
+            <div ng-model="poll.choices" ng-repeat="choice in poll.choices" class='poll-choice'>
+              <span> {{ choice.choice }} </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shows when no polls -->
+        <div class="no-friend-message" ng-show="!polls || polls.length === 0">
+          <h5 class="no-friend-name text-muted">No Polls Found</h5>
+        </div>
+      </div>
+      <div class="polls-create-background" data-role="full-screen-height" ng-show="page === 'create'">
+
+        <div class="new-poll-form">
+
+          <div class="row">
+            <div class="col-xs-12 event-setup-title-sect">
+              <label class="event-setup-label-txt">Enter your poll question</label>
+              <span class="create-event-error" ng-show="showPollQuestion === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+            </div>
+          </div>
+          <div class="row eventsetup-margin">
+            <div class="col-xs-12 event-setup-field-sect">
+              <textarea class="form-control cc-card-info" ng-model="poll.question" name="question" style="height: 100px;">
+              </textarea>
+              <span class="event-setup-label-required">*Required</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12 event-setup-title-sect">
+              <div class="inline form-group">
+                <label class="event-setup-label-txt">Single
+                  <input type="radio" name="answer" ng-model='poll.type' value='single' checked />
+                </label>
+              </div>
+              <div class="inline form-group">
+                <label class="event-setup-label-txt">Multiple
+                  <input type="radio" name="answer" ng-model='poll.type' value='multiple' />
+                </label>
+              </div>
+              <div class="inline form-group">
+                <label class="event-setup-label-txt">Text Feedback
+                  <input type="radio" name="answer" ng-model='poll.type' value='feedback' />
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-primary event-setup-btn-sav" ng-show="!isUpdate" ng-class="create-event-bottom-next-button" type="submit" ng-click="submitNewPoll()">{{ (!isUpdate) ? 'Add Poll' : 'Update Poll' }}</button>
+      </div>
+
+      <div class="polls-create-background" data-role="full-screen-height" ng-show="page === 'answers'">
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <h3> {{ poll.question }} </h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt">Add poll answer</label>
+            <span class="create-event-error" ng-show="showPollAnswer === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+        <div class="row eventsetup-margin">
+          <div class="col-xs-12 event-setup-field-sect">
+            <input type='text' class="form-control cc-card-info" ng-model="poll.choice" name="choice">
+            <button class="btn btn-default add-answer-bn" ng-click="submitNewAnswer(poll)">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

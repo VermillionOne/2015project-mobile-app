@@ -1,0 +1,240 @@
+<div ng-controller="FriendsController">
+
+  <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class = "suaray-menu-btn drawer-button">
+      <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars"></i>
+    </div>
+    <div class="suaray-menu-title">
+      Friends
+    </div>
+  </div>
+
+  <div class="tab-container">
+
+    <div class="suaray-body" ng-class="{ios: iOSStyles === true}">
+
+      <div class="friends-container">
+
+        <div class="container">
+
+          <div class="row" id="myTab">
+
+            <!-- Shows friends tab -->
+            <div class="col col-33  friend-icon friends-request-search">
+              <button class="new-friends-nav clicked-friends-nav" type="button" href="#friends"><i class="fa fa-users"></i>&nbsp;Friends</button>
+            </div>
+
+            <!-- Shows invite tab -->
+            <div class="col col-33 friends-request-search">
+              <button class="new-friends-nav" type="button" id="invite" href="#friend-invite">
+                <i class="fa fa-paper-plane"></i>&nbsp;Invite
+              </button>
+            </div>
+
+            <!-- Shows user search tab -->
+            <div class="col col-33 friends-request-search-last">
+              <button class="new-friends-nav" id="search" type="button" href="#friend-search">
+                <i class="fa fa-search"></i>&nbsp;Search<span class="badge badge-balanced"></span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="tab-content">
+
+        <div class="tab-pane active friends-panel" id="friends" ng-class="{ios: iOSStyles === true}">
+
+        <div class="list friends-list">
+
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <i class="icon fa fa-search input-search-icon"></i>
+              <input type="search" ng-model="friendfilter" placeholder="Search" class="search-friends">
+            </label>
+          </div>
+
+        </div>
+
+        <div class="friends-list-sect" ng-class="{ios: iOSStyles === true}">
+          <ul class="list list-unstyled friend-friends-list">
+
+            <li class="friends-friend-entry" ng-repeat="user in friendResults | filter:friendfilter">
+              <div class="friends-friend-list-profile-image-container" ng-click="goToPublicProfile(user)">
+                <div class="friends-friend-list-profile-image">
+                  <img ng-src="{{user.avatar}}" ng-if="user.avatar">
+                  <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="!user.avatar"> <!-- Profile Image for Friend Entry -->
+                </div> <!-- end friends-friend-list-profile-image -->
+
+                <div class="friends-friend-active-circle-container">
+                  <span class="friends-friend-active-circle"></span>
+                </div> <!-- end friends-friend-active-circle-container -->
+
+              </div> <!-- end friends-friend-list-profile-image-container -->
+
+              <div class="friends-friend-name-container" ng-click="goToPublicProfile(user)">
+                <p class="friends-friend-name">{{ user.firstName }} {{ user.lastName }}</p>
+                <p class="friends-friend-activity">Active</p>
+              </div> <!-- end friends-friend-name-container -->
+
+              <div class="friends-friend-delete-container"> <!-- Deletes friend and updates list -->
+                <button type="button" ng-click="deleteFriend(user.id, $index)" confirm-click="Are you sure you want to delete this friend? Click ok to confirm!" class="btn delete-friend btn-sm">Unfriend
+                </button>
+              </div>
+
+            </li> <!-- end friends-friend-entry - 1 -->
+
+            <!-- Displays when there are no friends -->
+            <div class="no-friend-message friend-list-tab" ng-if="friendResults.length === 0">
+              <h5 class="no-friend-name text-muted">Put Your Friends Here,</h5>
+              <h5 class="no-friend-name text-muted">So You Can Party With Them There!</h5>
+            </div>
+
+          </ul>
+        </div>
+      </div>
+
+      <!-- Invite friends to event -->
+      <div class="tab-pane friend-invite-panel" id="friend-invite" ng-class="{ios: iOSStyles === true}">
+
+        <form name="friendInvite">
+
+          <div class="list friends-list">
+
+            <div class="item item-input-inset">
+
+              <select class="form-control event-select" required ng-model="eventId" ng-options="event.id as event.title for event in myEvents">
+                <option value=''>Select An Event</option>
+              </select>
+
+            </div>
+
+          </div>
+
+          <div class="friends-list-sect" ng-class="{ios: iOSStyles === true}">
+
+            <ul class="list list-unstyled friend-friends-list">
+
+              <li class="friends-friend-entry" ng-repeat="friends in friendResults">
+                <div class="friends-friend-list-profile-image-container">
+
+                  <div class="friends-friend-list-profile-image">
+
+                    <!-- Friends avatar or default -->
+                    <img ng-src="{{friends.avatar}}" ng-if="friends.avatar">
+                    <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="!friends.avatar">
+
+                  </div>
+
+                  <div class="friends-friend-active-circle-container">
+                    <span class="friends-friend-active-circle"></span>
+                  </div> <!-- end friends-friend-active-circle-container -->
+
+                </div>
+
+                <div class="friends-friend-name-container">
+                  <p class="friends-friend-name">{{ friends.firstName }} {{ friends.lastName }}</p>
+                  <p class="friends-friend-activity">Active</p>
+                </div> <!-- end friends-friend-name-container -->
+
+                <!-- Invite button for individual friends -->
+                <div class="invite-event" >
+
+                  <div class="friend-check" ng-class="{ios: iOSStyles === true}">
+                    <div class="suaray-menu-btn-right">
+
+                      <!-- When friend invitation sent, button is disabled and displays 'Sent' -->
+                      <button ng-click="doSendInvite(friends.id, eventId); friends.meta[eventId].selected=!friend.selected" for="{{ friends.id }}" ng-model="requestBtn" ng-disabled="friendInvite.$invalid || friends.meta[eventId].selected" class="button button-small send-invites">
+                        <!-- Toggles button text -->
+                        <span>{{ friends.meta[eventId].selected?'Invited':'' }} {{ !friends.meta[eventId].selected?'Send':'' }}</span>
+                      </button>
+
+                    </div>
+                  </div>
+
+                </div>
+
+              </li>
+
+              <!-- Displays when there are no friends -->
+              <div class="no-friend-message" ng-show="friendResults.length === 0">
+                <h5 class="no-friend-name text-muted">Start adding friends to invite to your events! </br>
+                <a href="#friend-search" id="search-link" data-toggle="tab">Search</a> for people you know!</h5>
+              </div>
+
+            </ul>
+          </div>
+
+        </form>
+
+      </div>
+
+      <!-- User search dropdown -->
+      <div class="tab-pane friend-search-panel" id="friend-search" ng-class="{ios: iOSStyles === true}">
+
+        <div class="friends-overlay">
+
+          <div class="list friends-list">
+
+            <div class="item item-input-inset">
+              <label class="item-input-wrapper">
+                <i class="icon fa fa-search input-search-icon"></i>
+                <input type="search" ng-keyup="doSearch(searchText)" ng-model="searchText" placeholder="Search" class="search-friends">
+              </label>
+            </div>
+
+          </div>
+
+          <div class="friends-list-sect" ng-class="{ios: iOSStyles === true}">
+
+            <ul class="list-unstyled friend-friends-list" ng-show="searchText">
+
+              <li class="friends-friend-entry" ng-repeat="user in userList" ng-if="user.firstName || user.lastName || user.username" ng-click="goToPublicProfile(user)">
+                <div class="friends-friend-list-profile-image-container">
+
+                  <div class="friends-friend-list-profile-image">
+                    <img ng-src="{{user.avatar}}" ng-if="user.avatar">
+                    <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="!user.avatar"><!-- Profile Image for Friend Entry -->
+                  </div> <!-- end friends-friend-list-profile-image -->
+
+                  <div class="friends-friend-active-circle-container">
+                    <span class="friends-friend-active-circle"></span>
+                  </div> <!-- end friends-friend-active-circle-container -->
+
+                </div> <!-- end friends-friend-list-profile-image-container -->
+
+                <div class="friends-friend-name-container">
+                  <p class="friends-friend-name">{{ user.firstName }} {{ user.lastName }}</p>
+                  <p class="friends-friend-activity">Active</p>
+                </div> <!-- end friends-friend-name-container -->
+
+              </li> <!-- end friends-friend-entry - 1 -->
+
+              <!-- Shows when friend search returns no result -->
+              <div class="no-friend-message" ng-show="!(userList | filter:searchText).length">
+                <h5 class="no-friend-name text-muted">No Matches Found</h5>
+              </div>
+
+            </ul>
+
+            <!-- Shows on initial search page load -->
+            <div class="no-friend-message" ng-hide="searchText">
+              <h5 class="no-friend-name text-muted">Start Inviting! Search For Friends Here!</h5>
+            </div>
+
+          </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

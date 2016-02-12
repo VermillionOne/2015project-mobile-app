@@ -1,0 +1,59 @@
+<div ng-controller="SignInController">
+
+  <div class="login-loading-overlay">
+    <div class ="login-logo loading-logo-top">
+      <img src="/img/login-logo.png">
+    </div>
+    <div class="loading-login-top">
+      <div class="loader"></div>
+    </div>
+  </div>
+
+  <div class ="login-logo">
+    <img src="/img/login-logo.png">
+  </div>
+
+  <div class="login-error" ng-show="showLoginError"><i class="fa fa-exclamation-circle fa-inverse"></i> Incorrect Login. Please Try Again.</div>
+
+  <form name="loginForm">
+
+    <div class="login-fields">
+      <div class="field-icon">
+        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+      </div>
+      <input type="text" class="home-login" placeholder="Email Address" ng-model="signin.email" autocapitalize="off" autocorrect="off" required ng-pattern="signin.validationPattern.email">
+    </div>
+
+    <div class="login-fields">
+      <div class="field-icon">
+        <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+      </div>
+      <input type="password" class="home-login" placeholder="Password" ng-model="signin.password" required>
+    </div>
+
+    <div class="loading-login" ng-show="loading">
+      <div class="loader"></div>
+    </div>
+
+    <button type="button" ng-click="showForgotPassword()" class="button button-clear button-full button-small login-forgot-password-button" ng-show="showLoginError">Forgot Password?</button>
+
+    <div class="login-btn">
+      <button ng-click="doLogin()" type="submit" class="btn btn-login btn-lg btn-block" ng-disabled="loginForm.$invalid">Login</button>
+      <button type="button" class="button button-clear button-full button-light login-create-new" ng-click="showCreateAccount()">Sign Up</button>
+    </div>
+  </form>
+
+  <div class="social-btns-login">
+    <p>Login With Social Media</p>
+    <div class="button-bar">
+      <button class="button button-outline icon super-social-facebook" ng-click="doFacebookLogin()" ng-if='facebook'></button>
+      <button class="button button-outline icon super-social-twitter" ng-click="doTwitterLogin()" ng-if='twitter'></button>
+      <button class="button button-outline icon super-social-googleplus" ng-click="doGoogleLogin()" ng-if='google'></button>
+      <button class="button button-outline icon super-social-instagram" ng-click="doInstagramLogin()" ng-if='instagram'></button>
+    </div>
+  </div>
+  <div class='toast-message-box'>
+    <p class='toast-message'>GPS location could not be obtained, please enable location services on your device, popular events will be displayed instead.</p>
+  </div>
+</div>
+<script src="/components/jsSHA/src/sha.js"></script>

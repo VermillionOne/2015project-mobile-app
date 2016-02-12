@@ -1,0 +1,60 @@
+<div ng-controller="CrowdController" ng-init="init()">
+
+  <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class = "suaray-menu-btn drawer-button">
+      <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars"></i>
+    </div>
+
+    <div class="suaray-menu-title">
+      Crowd Surf
+    </div>
+
+  </div>
+
+  <div class="suaray-body crowd-body">
+
+    <div id="crowd" class="crowd-div">
+
+      <div id="carousel-slide" class="crowd-slider-container carousel slide" data-ride="carousel">
+
+        <div class="carousel-inner crowd-inner" role="listbox">
+
+          <div class="item crowd-item" ng-click="goToEventDetail(event.id)" ng-class="{active:$first}" ng-repeat="event in eventsInCrowd" data-role="crowd-slide" ng-init="sectionIndex = $index" data-event-id="{{event.id}}" on-finish-crowd="ngRepeatFinished">
+
+            <div class="crowd-photo-sect">
+              <img ng-src="{{event.featuredPhoto.url['320x440']}}" alt="...">
+
+              <div class="crowd-event-info">
+                <h3>{{event.title}}</h3>
+                <p>{{event.city}},&nbsp;{{event.state}}</p>
+                <p ng-if="event.venue">{{event.venue}}</p>
+                <button type="button" class="btn btn-primary crowd-event-btn" ng-click="goToEventDetail(event.id)">View Event</button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+        <div class="crowd-control-buttons">
+            <a href="#carousel-slide" role="button" data-slide"prev" class='crowd-prev-btn'>
+              <i class="fa fa-angle-left"></i>
+            </a>
+            <a href="#carousel-slide" role="button" data-slide"next" class='crowd-next-btn'>
+              <i class="fa fa-angle-right"></i>
+            </a>
+            <!--
+            <a href="#carousel-slide" role="button" data-slide="next">
+              <button type="button" class="btn btn-danger prev-crowd-slide">Not Interested</button>
+            </a>
+            -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

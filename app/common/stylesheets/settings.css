@@ -1,0 +1,39 @@
+.settings-body{
+  font-weight: 100;
+  width: 100%;
+  font-size: 14px;
+  position: top;
+  margin: 0px;
+  padding: 0px;
+}
+.settings-menu{
+  overflow: auto;
+  width: 100%;
+}
+.settings-menu-item{
+  margin: 0px;
+  border-bottom: solid 1px #e5e5e5;
+  overflow: auto;
+  width: 100%;
+  text-transform: uppercase;
+}
+.settings-menu-list-item-icon-holder{
+  float: left;
+  width: 15%;
+  margin-top: 3px;
+  font-size: 1.25em;
+}
+.settings-menu-list-item-icon-holder span{
+  margin: 20px;
+}
+.settings-menu-list-item-name{
+  float: left;
+  margin: 20px 0px 20px;
+  font-size: 1.3em;
+}
+.settings-menu-list-item-right-arrow{
+  float: right;
+}
+.settings-menu-list-item-right-arrow span{
+  margin: 20px;
+}

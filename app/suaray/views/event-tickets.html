@@ -1,0 +1,297 @@
+<!-- ***********************************
+Begin TICKETS AND RESERVATIONS SECTION
+************************************ -->
+<div ng-controller="EventTicketController">
+  <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class="suaray-menu-btn" ng-show="page !== 'create'">
+      <super-navigate-back>
+        <i class="super-arrow-left-c" ng-click="refresh()"></i>
+      </super-navigate-back>
+    </div>
+    <div class="suaray-menu-btn" ng-click="showTickets()" ng-show="page === 'create'"><span class="fa fa-angle-left"></span></div>
+
+    <div class="suaray-menu-title ticket-title">
+      Event Tickets
+    </div>
+    <div class="suaray-menu-btn-right" ng-click="showTicketForm()"><span class="fa super-plus-circled"></span></div>
+  </div>
+
+  <div class="suaray-body check-in-body tickets-body" ng-class="{ios: iOSStyles === true}" ng-show="page != 'create'">
+    <div class="top-wrapper row">
+
+      <div class="col col-50 check-in-top-row" ng-click="showTickets()">
+
+        <div class="check-in-label inline-box check-in-active">
+          <i class="fa fa-ticket"></i>
+          <label> Tickets </label>
+        </div>
+
+      </div>
+
+      <div class="col col-50 check-in-top-row" ng-click="showReservations()">
+
+        <div class="check-in-history inline-box">
+          <i class="fa fa-history"></i>
+          <label> Reservations </label>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="list tickets-page-container">
+    <div class="tickets-background" data-role="full-screen-height" ng-show="page === 'tickets'">
+      <div class="card" ng-repeat="ticket in tickets" ng-click="editTicket(ticket)">
+
+        <div class="item item-text-wrap row">
+
+          <div class="col check-in-info">
+            <h3> {{ ticket.name }} </h3>
+            <span class="ticket-event"> @ {{ event.title }} </span>
+            <span class="ticket-event-label"> Starts At: </span>
+            <span class="created-at ticket-creation"> {{ ticket.startsAt | date:"MMM. d, y" }} </span>
+            <p class="ticket-event-description static-text">{{ ticket.description }}</p>
+
+            <div class="card-ticket-bottom">
+              <label class=""> Price: </label>
+              <span> ${{ ticket.amount }} </span>
+              <label class=""> Quantity: </label>
+              <span> {{ ticket.inventory }} </span>
+              <label>Enabled:</label>
+              <span> {{ (ticket.isEnabled || ticket.is_enabled) ? "True" : "False" }} </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Shows when no tickets -->
+      <div class="no-friend-message" ng-show="tickets.length === 0">
+        <h5 class="no-friend-name text-muted">No Tickets Found</h5>
+      </div>
+    </div>
+
+    <div class="tickets-background" data-role="full-screen-height" ng-show="page === 'reservations'">
+
+      <div class="card" ng-repeat="ticket in reservations" ng-click="editTicket(ticket)">
+
+        <div class="item item-text-wrap row">
+
+          <div class="col check-in-info">
+            <h3> {{ ticket.name }} </h3>
+            <span class="ticket-event"> @ {{ event.title }} </span>
+            <span class="created-at ticket-creation"> {{ ticket.startsAt | date:"MMM. d, y" }} </span>
+
+            <div class="card-ticket-bottom">
+              <label class=""> Price: </label>
+              <span> ${{ ticket.amount }} </span>
+              <label class=""> Quantity: </label>
+              <span> {{ ticket.inventory }} </span>
+              <label>Enabled:</label>
+              <span> {{ (ticket.isEnabled || ticket.is_enabled) ? "True" : "False" }} </span>
+              <br />
+              <label> Confirmation: </label>
+              <p> {{ ticket.confirmationMessage || ticket.confirmation_message }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Shows when no reservations -->
+      <div class="no-friend-message" ng-show="reservations.length === 0">
+        <h5 class="no-friend-name text-muted">No Reservations Found</h5>
+      </div>
+    </div>
+
+    <div class="create-background" data-role="full-screen-height" ng-show="page === 'create'">
+
+      <div class="row">
+        <div class="col-xs-6 event-setup-title-sect">
+          <label class="control-label event-setup-label-txt" for="event.eventType"> Reservation
+          <input class="cc-card-info is-reservation" type="checkbox" ng-model="ticket.is_reservation" ng-click="showReservationForm($event)" >
+          </label>
+        </div>
+        <div class="col-xs-6 event-setup-title-sect">
+          <label class="control-label event-setup-label-txt" for="event.eventType"> Enabled 
+          <input class="cc-card-info is-enabled" type="checkbox" ng-model="ticket.isEnabled" >
+          </label>
+        </div>
+      </div>
+
+      <div class="new-ticket-form" ng-show="!isReservation">
+
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt">Ticket Name</label>
+            <span class="create-event-error" ng-show="showTicketNameField === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+        <div class="row eventsetup-margin">
+          <div class="col-xs-11 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="ticket.name" name="name" aria-describedby="basic-addon1">
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt"> Ticket Description
+            </label>
+          </div>
+        </div>
+        <div class="row eventsetup-margin">
+          <div class="col-xs-12 event-setup-field-sect">
+            <textarea name="description" ng-model="ticket.description" class="form-control cc-card-info"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">Start Date</label>
+          </div>
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">End Date</label>
+          </div>
+        </div>
+
+        <div class="row eventsetup-margin">
+          <div class="col-xs-6 event-setup-field-sect">
+            <input required type="date" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="ticket.startsAt" name="" aria-describedby="basic-addon1" required>
+          </div>
+
+          <div class="col-xs-6 event-setup-field-sect">
+            <input required type="date" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="ticket.endsAt" name="" aria-describedby="basic-addon1" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">Ticket Price</label>
+            <span class="create-event-error" ng-show="showTicketPriceField === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">Inventory #</label>
+            <span class="create-event-error" ng-show="showTicketInventoryField === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 event-setup-field-sect">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">$</span>
+              <input required type="text" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="ticket.amount" name="" aria-describedby="basic-addon1" required>
+            </div>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+          <div class="col-xs-6 event-setup-field-sect">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">#</span>
+              <input required type="text" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="ticket.inventory" name="" aria-describedby="basic-addon1" required>
+            </div>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12 event-ticket-success">
+            <p class="upload-result ticket-success" ng-show="ticketSuccess">Success! Ticket has been updated.<span class="fa fa-check"></span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="new-reservation-form" ng-show="isReservation === true">
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt">Reservation Name</label>
+            <span class="create-event-error" ng-show="showResNameField === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+        <div class="row eventsetup-margin">
+          <div class="col-xs-12 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="reservation.name" name="title" aria-describedby="basic-addon1">
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-11 event-setup-title-sect">
+            <label class="event-setup-label-txt"> Reservation Description </label>
+            <span class="create-event-error" ng-show="showResDescriptionField === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+        <div class="row eventsetup-margin">
+          <div class="col-xs-12 event-setup-field-sect">
+            <textarea name="description" ng-model="reservation.description" class="form-control cc-card-info"></textarea>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt"> Confirmation Message </label>
+            <span class="create-event-error" ng-show="showResConfirmationField === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+        <div class="row eventsetup-margin">
+          <div class="col-xs-12 event-setup-field-sect">
+            <textarea name="description" ng-model="reservation.confirmationMessage" class="form-control cc-card-info"></textarea>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">Start Date</label>
+          </div>
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">End Date</label>
+          </div>
+        </div>
+
+        <div class="row eventsetup-margin">
+          <div class="col-xs-6 event-setup-field-sect">
+            <input required type="date" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="reservation.startsAt" name="" aria-describedby="basic-addon1" required>
+          </div>
+
+          <div class="col-xs-6 event-setup-field-sect">
+            <input required type="date" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="reservation.endsAt" name="" aria-describedby="basic-addon1" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">Reservation Price</label>
+            <span class="create-event-error" ng-show="showResPriceField === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">Inventory #</label>
+            <span class="create-event-error" ng-show="showResInventoryField === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 event-setup-field-sect">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">$</span>
+              <input required type="text" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="reservation.amount" name="" aria-describedby="basic-addon1" required>
+            </div>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+          <div class="col-xs-6 event-setup-field-sect">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">#</span>
+              <input required type="text" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="reservation.inventory" name="" aria-describedby="basic-addon1" required>
+            </div>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12 event-ticket-success">
+            <p class="upload-result reservation-success" ng-show="reservationSuccess">Success! Reservation has been updated.<span class="fa fa-check"></span></p>
+          </div>
+        </div>
+
+      </div>
+      <button class="btn btn-primary event-setup-btn-sav" ng-show="!isUpdate" ng-class="create-event-bottom-next-button" type="submit" ng-click="submitNewTicket()">{{ (!isReservation) ? 'Add Ticket' : 'Add Reservation' }}</button>
+      <button class="btn btn-primary event-setup-btn-sav" ng-show="isUpdate" ng-class="create-event-bottom-next-button" type="submit" ng-click="submitNewTicket(true)">{{ (!isReservation) ? 'Update Ticket' : 'Update Reservation' }}</button>
+
+    </div>
+  </div>
+</div>

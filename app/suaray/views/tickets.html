@@ -1,0 +1,142 @@
+<div ng-controller="TicketController">
+
+  <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class="suaray-menu-btn">
+      <a ng-click="showEventDetail()">
+        <i class="super-arrow-left-c"></i>
+      </a>
+    </div>
+
+    <div class="suaray-menu-title">
+      Tickets
+    </div>
+
+  </div>
+
+  <div class="suaray-body tickets-purchase">
+
+    <div id="event-detail-header">
+      <div class="event-detail-graphic">
+
+        <img ng-if="event.featuredPhoto" ng-src="{{event.featuredPhoto.url['460x275']}}" alt="..." >
+        <img ng-if="event.featuredPhoto == undefined" ng-src="{{event.photos[0].url['460x275']}}" alt="..." >
+
+        <div class="featured-event-info">
+          <h3>{{event.title}}</h3>
+          <p>{{event.city}},&nbsp;{{event.state}}</p>
+          <p ng-if="event.venue">{{event.venue}}</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="tickets-title-sect">
+      <div class="tickets-page-title">Pricing Details</div>
+    </div>
+
+    <div class="padding-horizontal tickets-cart">
+
+      <div class="row tickets-purchase-queue" ng-repeat="ticket in purchase.tickets track by $index" ng-class="{'last':$last}" ng-if="ticket.quantity > 0 || ticket.quantity !== undefined">
+
+        <p class="col col-10 ticket-purchase-quantity">{{ticket.quantity}} x</p>
+
+        <p class="col tickets-purchase-name">{{ticket.name}}</p>
+
+        <p class="col col-25 tickets-purchase-price">{{ticket.price * ticket.quantity | currency}}</p>
+
+      </div>
+
+      <div class="row tickets-cart-total">
+
+        <p class="col col-50 tickets-cart-total-title">Total<sup>*</sup></p>
+
+        <div class="tickets-cart-total-arrow"></div>
+
+        <p class="col col-50 tickets-purchase-total">{{ticketsTotal | currency}}</p>
+
+      </div>
+
+    </div>
+
+    <div class="ticket-privacy padding-horizontal">
+      *Note: The amount shown includes the ticket/item price plus, when applicable, service fee, facility charge, and additional taxes. The ticket or tickets will be emailed to your accounts address
+    </div>
+
+    <div class="tickets-title-sect">
+      <div class="tickets-page-title">Payment</div>
+    </div>
+
+    <form id="payment-form" name="payment-form" method="POST">
+      <p class="payment-errors">{{response.error.message}}</p>
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">Card Holder</span>
+          <span class="create-event-error" ng-show="nameError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          <input type="text" name="name" data-stripe="name" ng-model="userBilling.name" placeholder="Full Name" tabindex="1">
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label">Card Number</span>
+          <span class="create-event-error" ng-show="numberError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          <input type="number" name="number" min="0" inputmode="numeric" ng-model="userBilling.number" pattern="[0-9]*" data-stripe="number" placeholder="0000-0000-0000-0000"  tabindex="2">
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label">CVC Number</span>
+          <span class="create-event-error" ng-show="cvcError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          <input type="number" name="cvc" min="0" inputmode="numeric" pattern="[0-9]*" ng-model="userBilling.cvc" data-stripe="cvc" placeholder="000"  tabindex="3">
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label">Exp Month</span>
+          <span class="create-event-error" ng-show="monthError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          <input type="number" name="month" data-stripe="exp-month" ng-model="userBilling.month" placeholder="MM" tabindex="4">
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label">Exp Year</span>
+          <span class="create-event-error" ng-show="yearError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          <input type="number" name="year" data-stripe="exp-year" ng-model="userBilling.year" placeholder="YYYY" tabindex="5">
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label">Zip</span>
+          <span class="create-event-error" ng-show="zipError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          <input type="number" name="zip" data-stripe="address_zip" ng-model="userBilling.zip" placeholder="00000" tabindex="6">
+        </label>
+
+      </div>
+
+      <div class="padding-horizontal">
+        <button class="button button-block button-balanced tickets-submit-button" ng-click="submitPaymentForm()" type="submit">
+        <span class="fa fa-spinner fa-pulse fa-inverse" ng-show="processingPurchase === true"></span> Purchase Tickets
+        </button>
+      </div>
+    </form>
+
+    <div class="ticket-footer-privacy">
+     By clicking the "Purchase Tickets" button, you are agreeing to the Suaray Purchase Policy and Privacy Policy. All orders are subject to credit card approval and billing address verification. Please contact customer service if you have any questions regarding your order.
+    </div>
+
+    <div class="payment-successful" ng-show="successBox === true">
+
+      <div ng-show="purchaseConfirmation === true">
+        <p>Congratulations!</p>
+        <p>Your purchase for {{event.title}} is successful!</p>
+        <p>Your receipt has been emailed to you.</p>
+        <button class="button button-balanced button-block tick-vote-button" ng-click="showEventDetail()">Back To Event</button>
+      </div>
+
+      <div ng-show="purchaseError === true">
+        <p>We're Sorry...</p>
+        <p>An issue came up with your purchase. Please contact us at <a data-role="ticket-support-link" href='mailto:support@suaray.com?Subject=purchase error' target="_top">support@suaray.com</a> for more information about your transaction.</p>
+        <button class="button button-balanced button-block tick-vote-button" ng-click="showEventDetail()">Back To Event</button>
+      <div>
+
+    </div>
+  </div>
+
+  <span data-role="show-box" ng-click="showBox()"></span>
+
+</div>

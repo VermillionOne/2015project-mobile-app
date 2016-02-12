@@ -1,0 +1,316 @@
+<div ng-controller="ProfileController">
+
+  <div class="loading-overlay">
+    <div class="loading-login-top">
+      <div class="loader"></div>
+    </div>
+  </div>
+
+  <div class="profile-of-user" ng-show="page === 'profile-detail'" ng-init="setInitialScope()">
+
+    <div id = "suaray-nav" ng-class="{ios: iOSStyles === true}">
+    <div class = "suaray-menu-btn drawer-button">
+        <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars" ></i>
+      </div>
+
+      <div class = "suaray-menu-title">
+        Profile
+      </div>
+    </div>
+
+    <div class = "suaray-body">
+
+      <div class = "profile-container" ng-class="{ios: iOSStyles === true}">
+
+        <div class = "profile-info">
+          <div class = "profile-pic-sect">
+            <div class = "profile-pic-main" ng-class="{newAvatar: showNewAvatar === true}">
+
+              <div class="profile-pic-shading"></div>
+              <!-- First Profile Image Tag: Shows stored avatar -->
+              <img ng-src="{{auth.avatar}}" ng-if="auth.avatar !== null">
+
+            </div>
+          </div>
+
+          <div class = "profile-presonal-info-sect profile-personal-info">
+
+            <div class = "profile-personal-info-name">{{ auth.firstName }} {{ auth.lastName }}</div>
+
+            <!-- If account linked to google, show information and means to view profile -->
+            <div class = "profile-personal-info-txt" ng-if="socialProfile === 'google' ">
+              <span class = "profile-personal-info-subtxt"><i class="fa fa-lg fa-google-plus-square"></i></span>
+              <span ng-if="auth.social.google.username" ng-click="googlePlusLink()">{{ auth.social.google.username }}</span>
+              <span ng-if="!auth.social.google.username" ng-click="googlePlusLink()">{{ auth.username }}</span>
+            </div>
+
+            <!-- If account linked to facebook, show information and means to view profile -->
+            <div class = "profile-personal-info-txt" ng-if="socialProfile === 'facebook' ">
+              <span class = "profile-personal-info-subtxt"><i class="fa fa-lg fa-facebook-square"></i></span>
+              <span ng-if="auth.social.facebook.username" ng-click="facebookLink()">{{ auth.social.facebook.username }}</span>
+              <span ng-if="!auth.social.facebook.username" ng-click="facebookLink()">{{ auth.username }}</span>
+            </div>
+
+            <!-- If account linked to twitter, show information and means to view profile -->
+            <div class = "profile-personal-info-txt" ng-if="socialProfile === 'twitter' ">
+              <span class = "profile-personal-info-subtxt"><i class="fa fa-lg fa-twitter"></i></span>
+              <span ng-if="auth.social.twitter.username" ng-click="twitterLink()"> @{{ auth.social.twitter.username }}</span>
+              <span ng-if="!auth.social.twitter.username" ng-click="twitterLink()">{{ auth.username }}</span>
+            </div>
+
+            <!-- If account linked to instagram, show information and means to view profile -->
+            <div class = "profile-personal-info-txt" ng-if="socialProfile === 'instagram' ">
+              <span class = "profile-personal-info-subtxt"><i class="fa fa-lg fa-instagram"></i></span>
+              <span ng-if="auth.social.instagram.username" ng-click="instagramLink()">{{ auth.social.instagram.username }}</span>
+              <span ng-if="!auth.social.instagram.username" ng-click="instagramLink()">{{ auth.username }}</span>
+            </div>
+
+            <!-- If no social accounts linked, defaults to email -->
+            <div class = "profile-personal-info-txt" ng-if="!socialProfile">
+              <span class = "profile-personal-info-subtxt">Email:</span> {{ auth.email }}
+            </div>
+            <!-- button to go to Profile edit page -->
+            <button type="button" class="button edit-profile-button button-small" ng-click="showProfileEdit()">Edit Profile</button>
+
+          </div>
+        </div>
+      </div>
+
+      <div class = "profile-calendar-title">Social Schedule</div>
+
+      <div class = "profile-calendar">
+        <div id= "calendar"></div>
+      </div>
+
+      <div class="profile-my-events-sliders">
+        <div class="profile-my-events-slide-sect">
+          <div class="profile-my-events-slide-title">My Events</div>
+
+          <div class="event-slide-thumb">
+            <ul id="img-list" data-role="related-event-slider">
+
+              <li class="event-detail-related-event event-list" ng-repeat="event in myEvents">
+
+                <!-- If owned event has featured image, show image -->
+                <img ng-if="event.featuredPhoto" ng-src="{{event.featuredPhoto.url['114x88']}}">
+
+                <!-- If event does not have featured image, show default -->
+                <img ng-if="!event.featuredPhoto" ng-src="/img/generating-114x88.png">
+
+                <!-- Clickable overlay takes user to event detail -->
+                <div class="icon" ng-click="goToEventDetail(event.id)">
+                  <p class="my-event-text">{{ event.title }}</p>
+                </div>
+
+              </li>
+
+            </ul>
+          </div>
+
+          <!-- Displays when there are no events -->
+          <li ng-show="!myEvents.length">
+            <div class="no-events-users">no events created</div>
+          </li>
+
+        </div>
+      </div>
+
+      <div id = "activity-wall-sect">
+
+        <div class = "activity-wall-title">Activity Wall</div>
+
+         <form data-role="update-wall">
+
+          <input type="hidden" name="userId" value="{{ loggedinuser.id }}">
+          <input type="hidden" name="updatesTime" value="{{ usersComments.createdAt }}">
+
+          <div class="profile-comment-input-container">
+            <div class="item item-input-inset event-detail-review-input-box">
+              <label class="item-input-wrapper event-detail-review-input-label">
+                <input type="text" data-role="comment-input" ng-model="update.message" name="message" placeholder="Comments">
+              </label> <!-- END Comment Input | item-input-wrapper -->
+            </div> <!-- END  | list event-detail-review-input-container -->
+
+            <div class = "activity-post-btn">
+              <button type="submit" class="btn btn-success btn-lg btn-block">Post</button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+      <div class = "activity-comment" ng-class="{ios: iOSStyles === true}">
+
+        <div class = "row" ng-repeat="userUpdates in usersComments" id="{{ userUpdates.id }}" ng-click="(!userUpdates.friend) ? return : goToPublicProfile(userUpdates, $event)">
+
+          <div class = "col">
+            <div class = "profile-pic-main" ng-if="userUpdates.friend">
+
+              <img ng-src="{{userUpdates.friend.avatar}}" ng-if="userUpdates.friend.avatar">
+
+              <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="userUpdates.friend.avatar === null">
+
+            </div>
+
+            <div class = "profile-pic-main" ng-if="!userUpdates.friend">
+
+              <img ng-src="{{auth.avatar}}" ng-if="auth.avatar !== null && newAvatarImage !== true">
+
+            </div>
+
+          </div>
+
+          <div class = "col col-80">
+            <div class = "profile-comments-sect">
+              <div class = "col-holder">
+
+                <div class = "profile-usename-event" ng-if="!userUpdates.friend">
+                  <div class = "profile-comments-username">{{ auth.firstName }} {{ auth.lastName }}</div>
+                </div>
+                <div class = "profile-usename-event" ng-if="userUpdates.friend">
+                  <div class = "profile-comments-username">{{ userUpdates.friend.firstName }} {{ userUpdates.friend.lastName }}</div>
+                </div>
+                <button class="btn btn-danger profile-comment-delete fa fa-times" ng-click="deleteUserComment(userUpdates.id)"></button>
+              </div>
+
+              <div class = "profile-comments-desc">{{ userUpdates.message }}</div>
+
+              <div class = "profile-comment-postdate">
+                <i class="fa fa-clock-o"></i> {{ userUpdates.createdAt }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ***************** Edit Profile Page ********************** -->
+
+  <div class="profile-of-user-edit" ng-if="page === 'profile-edit'">
+
+    <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+      <div class="suaray-menu-btn">
+        <!-- Hide Profile Settings -->
+        <span ng-click="showProfile()" class="icon super-arrow-left-c" ng-hide="currentlyUploading === true"></span>
+      </div>
+      <div class="suaray-menu-title">
+        Profile Edit
+      </div>
+      <div class="suaray-menu-btn-right">
+        <button ng-click="putUserData()" ng-disabled="profileUpdateForm.$pristine" class="button button-small">Save</button>
+      </div>
+    </div>
+
+    <div class = "suaray-body profile-edit">
+
+        <div class="list" >
+
+          <div class="item item-avatar">
+            <!-- First Profile Image Tag: Shows stored avatar -->
+            <img ng-src="{{auth.avatar}}" ng-if="auth.avatar !== null && newAvatarImage !== true">
+            <!-- Second Profile Image Tag: Shows newly uploaded avatar -->
+            <img ng-src="{{newAvatar}}" class="new-avatar" ng-if="showNewAvatar === true">
+
+            <h2>Profile Avatar</h2>
+            <button type="button" class="button button-small change-avatar-button" data-role="file-select" ng-click="userPhoto()">Change Avatar Image</button>
+          </div>
+
+          <div class="item item-body profile-edit-new-avatar" ng-show="newAvatarImage === true">
+            <div class="profile-pic-sect">
+              <div class="profile-pic-upload-new">
+
+                <img ng-src="{{newAvatar}}" ng-class="{ios: iOSStyles === true}" ng-model="user.newAvatar">
+
+              </div>
+            </div>
+          </div>
+
+          <div class="item item-icon-left" ng-show="newAvatarImage === true">
+
+            <span ng-hide="avatarReady === true">
+              <i class="icon super-upload" data-role="avatar-uploaded"></i> <!-- ng-click="avatarUploaded()" -->
+              Avatar Image Uploading
+            </span>
+
+            <span ng-show="avatarReady === true">
+              <i class="icon super-android-cloud-done"></i>
+              New Avatar Uploaded<br>
+              <sup>You can safely navigate away from this page.</sup>
+            </span>
+          </div>
+        </div>
+
+      <form name="profileUpdateForm" ng-model="form" novalidate>
+
+        <div class="list">
+
+          <label class="item item-input">
+            <span class="input-label">First Name</span>
+            <input ng-model="editUser.firstName" type="text" placeholder="{{auth.firstName}}">
+          </label>
+
+          <label class="item item-input">
+            <span class="input-label">Last Name</span>
+            <input ng-model="editUser.lastName" type="text" placeholder="{{auth.lastName}}">
+          </label>
+
+          <label class="item item-input">
+            <span class="input-label">Username
+              <span class="create-event-error" ng-if="errorList[0] === 'The username has already been taken.'"><i class="fa fa-exclamation fa-inverse"></i></span>
+              <span class="create-event-error" ng-if="errorList[1] === 'The username has already been taken.'"><i class="fa fa-exclamation fa-inverse"></i></span>
+            </span>
+            <input ng-model="editUser.username" type="text" placeholder="{{auth.username}}">
+          </label>
+
+          <label class="item item-input">
+            <span class="input-label">Email
+              <span class="create-event-error" ng-if="errorList[0] === 'The email has already been taken.'"><i class="fa fa-exclamation fa-inverse"></i></span>
+            </span>
+            <input ng-model="editUser.email" type="email" placeholder="{{auth.email}}">
+          </label>
+
+          <label class="item item-input">
+            <span class="input-label">Time Zone</span>
+              <select class="timezone-select" ng-model="editUser.timezoneId" ng-class="{ios: iOSStyles === true}" ng-options="timezone.id as timezone.zoneName for timezone in timezones">
+                <option value="">{{ defaultTimezone.zoneName}}</option>
+              </select>
+          </label>
+
+          <label class="item item-input">
+            <span class="input-label">Password
+              <span class="create-event-error" ng-if="errorList[0] === 'The password must be at least 6 characters.'"><i class="fa fa-exclamation fa-inverse"></i></span>
+            </span>
+            <input ng-model="editUser.password" type="password">
+          </label>
+
+          <!-- ***** ACCOUNT PRIVACY - FUTURE FEATURE  *****
+          <div class="item item-toggle profile-edit-account-privacy" ng-init="user.privacy = false">
+             Account Privacy
+             <span ng-show="user.privacy === true">On</span>
+             <span ng-show="user.privacy === false">Off</span>
+             <label class="toggle">
+               <input type="checkbox" ng-model="user.privacy">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </div> -->
+
+          <p class="create-event-error" ng-if="errorList" ng-repeat="n in errorList">{{$index + 1}}. {{n}}</p>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="/components/jquery/dist/jquery.js" /></script>
+<script src='/components/moment/moment.js'></script>
+<script src="/components/fullcalendar/dist/fullcalendar.js"></script>
+<script src="/components/evaporatejs/evaporate.js"></script>

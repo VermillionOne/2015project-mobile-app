@@ -1,0 +1,6 @@
+/**
+ * Suaray version number
+ *
+ * @type string
+ */
+var suarayVersion = '{version}';

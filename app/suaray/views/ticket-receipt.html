@@ -1,0 +1,53 @@
+<div ng-controller="TicketReceiptController">
+
+  <div id = "suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class = "suaray-menu-btn back-button">
+      <span ng-click="showMyTickets()" class="super-arrow-left-c"></span>
+    </div>
+
+    <div class = "suaray-menu-title">
+      Ticket Order
+    </div>
+
+  </div>
+
+  <div class="suaray-body ticket-receipt">
+
+    <img class="ticket-recipt-qr-code" ng-src="{{qrCode}}">
+
+    <h1 class="ticket-receipt-text-code">{{ticketReceipt.code}}</h1>
+
+    <h2 class="ticket-receipt-event-title">@ {{ticketReceipt.event.title}}</h2>
+
+    <div class="ticket-receipt-ticket-event-start-area" ng-if='ticketReceipt.eventTime.start !== null'>
+
+      <p class="ticket-receipt-event-date">{{ticketReceipt.eventTime.start | parseTimeDataFilter | date:"MMM. d, y"}}</p>
+
+      <p class="ticket-receipt-event-start-time">{{ticketReceipt.eventTime.start | parseTimeDataFilter | date:"h:mma"}}</p>
+
+      <p class="ticket-receipt-event-start">Starts: </p>
+
+    </div>
+
+    <h3 class="ticket-receipt-tickets-purchased-title">Tickets Purchased:</h3>
+
+    <div class="ticket-receipt-ticket-types" ng-repeat="type in ticketReceipt.types">
+
+      <h4 class="ticket-receipt-ticket-type-title">{{type.name}}</h4>
+
+      <div class="ticket-receipt-ticket-type-price">
+        <p class="ticket-receipt-ticket-type-unit-cost-times-amount"><span class="fa fa-usd"></span>{{type.amount | number: 2}}<span class="fa fa-times"></span>{{type.qty.purchased | number: 0}}</p>
+
+        <p class="ticket-receipt-ticket-type-total"><span class="fa fa-usd"></span>{{type.amount * type.qty.purchased | number: 2}}</p>
+      </div>
+
+      <p class="my-tickets-order-ticket-type-available">Available: {{type.qty.available | number: 0}}</p>
+
+      <p class="my-tickets-order-ticket-type-used">Used: {{type.qty.used | number: 0}}</p>
+
+    </div>
+
+  </div>
+
+</div>

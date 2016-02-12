@@ -1,0 +1,35 @@
+<div ng-controller="TicketSummmaryController">
+
+  <div id = "suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class = "suaray-menu-btn drawer-button">
+      <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars"></i>
+    </div>
+
+    <div class = "suaray-menu-title">
+      My Tickets
+    </div>
+
+  </div>
+
+  <div class = "suaray-body">
+
+    <div class="list">
+
+      <div class="tickets-summary-item item item-icon-left" ng-repeat="ticketOrder in ticketOrders" ng-click="goToTicketDetail(ticketOrder)">
+        <span class="icon fa fa-ticket fa-fw "></span>
+        <!-- <img ng-src="{{ticketThumbnail.url['114x88'][$index]}}" alt=""> Requires item-thumbnail-left in previous tag-->
+        <h2>{{ ticketOrder.event.title}}</h2>
+
+        <p><span class="fa fa-map-marker fa-fw"></span>{{ ticketOrder.event.city }}, {{ ticketOrder.event.state}}</p>
+        <p><span class="fa fa-calendar fa-fw"></span>{{ ticketOrder.createdAt }}</p>
+        <span class="fa fa-angle-right fa-fw"></span>
+
+      </div>
+      <!-- Displays when there are no tickets -->
+      <div class="no-friend-message" ng-hide="ticketOrders.length">
+        <h5 class="no-friend-name text-muted">No Tickets</h5>
+      </div>
+  </div>
+
+</div>

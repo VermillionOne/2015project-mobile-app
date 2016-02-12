@@ -1,0 +1,93 @@
+<div ng-controller="FeaturedController">
+
+  <div class="loading-overlay">
+    <div class="loading-login-top">
+      <div class="loader"></div>
+    </div>
+  </div>
+
+  <div id="suaray-nav" data-role="suaray-nav" ng-init="nearTop = null" ng-class="{ios: iOSStyles === true}">
+
+    <div class = "suaray-menu-btn drawer-button">
+      <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars"></i>
+    </div>
+
+    <div class="suaray-menu-title">
+      Featured
+    </div>
+
+    <div class="suaray-menu-btn-right" >
+      <span class="super-checkmark-circled" ng-if="checkin === true" ng-click="showCheckIn()"></span>
+      <span class="super-plus-circled" ng-click="showCreate()"></span>
+    </div>
+
+  </div>
+
+  <div class="suaray-body suaray-search-bg suaray-featured-body" ng-class="{ios: iOSStyles === true}">
+
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner home-carousel-container" role="listbox">
+
+        <div class="item" ng-click="goToEventDetail(event.id)" ng-class="{active:$first}" ng-repeat="event in eventsIsFeatured">
+
+          <img ng-if="totalWidth === 'large'" data-role="slider-image" ng-src="{{event.featuredPhoto.url['1920x430']}}" alt="..." >
+          <img ng-if="totalWidth === 'medium'" data-role="slider-image" ng-src="{{event.featuredPhoto.url['660x320']}}" alt="..." >
+          <img ng-if="totalWidth === 'small'" data-role="slider-image" ng-src="{{event.featuredPhoto.url['460x275']}}" alt="..." >
+          <img ng-if="totalWidth === 'xSmall'" data-role="slider-image" ng-src="{{event.featuredPhoto.url['320x192']}}" alt="..." >
+
+          <div class="featured-event-info">
+            <h3>{{event.title}}</h3>
+            <p>{{event.city}},&nbsp;{{event.state}}</p>
+            <p ng-if="event.venueName">{{event.venueName}}</p>
+            <p class="sponsored-badge" ng-if="event.isSponsored === true">Sponsored</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Events by Featured Tags/Categories -->
+    <div class="home-categories" data-role="affix-top" ng-class="{ios: iOSStyles === true}">
+      <ul ng-init="featuredTab(currentTag, 0)">
+        <li ng-repeat="tag in featuredTagList" ng-click="featuredTab(tag, $index)" ng-class="{active: featuredTag === {{$index}} }" data-role="{{$index}}" > {{ tag }} </li>
+      </ul>
+    </div>
+    <div class="load-bar">
+      <div class="bar-inner"></div>
+      <div class="bar-inner"></div>
+      <div class="bar-inner"></div>
+    </div>
+    <div class="list home-category-events hidden" ng-model="featuredTagEvents">
+
+      <div ng-animate-children ng-if="event.featuredPhoto" class="home-category-events-card" ng-repeat="event in featuredTagEvents" ng-click="goToEventDetail(event.id)">
+
+        <img ng-if="totalWidth === 'large'" data-role="slider-image" ng-src="{{event.featuredPhoto.url['1920x430']}}" alt="..." >
+        <img ng-if="totalWidth === 'medium'" data-role="slider-image" ng-src="{{event.featuredPhoto.url['660x320']}}" alt="..." >
+        <img ng-if="totalWidth === 'small'" data-role="slider-image" ng-src="{{event.featuredPhoto.url['460x275']}}" alt="..." >
+        <img ng-if="totalWidth === 'xSmall'" data-role="slider-image" ng-src="{{event.featuredPhoto.url['320x192']}}" alt="..." >
+
+        <div class="home-category-events-card-info">
+          <h3 class="home-category-event-title">{{event.title}}</h3> 
+          <h2 class="home-category-event-city">{{event.city}}</h2>
+          <p class="home-category-event-date">{{event.startDate || "No Upcoming Dates"}}</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <!-- suaray-app-home -->
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:320px;height:50px"
+       data-ad-client="ca-pub-6099554217246223"
+       data-ad-slot="1029508590"></ins>
+  <script>
+  (adsbygoogle=window.adsbygoogle || []).push({});
+  </script>
+</div>

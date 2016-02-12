@@ -1,0 +1,135 @@
+<div ng-controller="PaymentController">
+
+  <div ng-show="page === 'payment'">
+
+    <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+      <div class="suaray-menu-btn chevron-button" ng-click="closeModal()"><span class="fa fa-angle-left"></span></div>
+
+      <div class="suaray-menu-title">
+        Stripe Account
+      </div>
+
+    </div>
+
+    <div class="create-background create-scroll payment-background" data-role="full-screen-height">
+
+      <form id="account-payment-form" data-role="account-payment-form" novalidate>
+        <h4> Account Holder </h4>
+        <br />
+        <p class="payment-errors">{{error.message}}</p>
+        <div class="row">
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">First Name</label>
+          </div>
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">Last Name</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" data-stripe="firstName" ng-model="legal_entity.first_name" placeholder="First Name" required>
+            <span class="create-event-error" ng-show="showNameError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+          <div class="col-xs-5 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" data-stripe="lastName" ng-model="legal_entity.last_name" placeholder="Last Name" required>
+            <span class="create-event-error" ng-show="showNameError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt">Date of Birth</label>
+            <span class="create-event-error" ng-show="showDobError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 event-setup-field-sect dobMo">
+            <input type="text" class="form-control cc-card-info" data-stripe="dobMonth" placeholder="Month" ng-model="legal_entity.dob.month" aria-describedby="basic-addon1" data-stripe="dobMonth" required>
+          </div>
+          <div class="col-xs-4 event-setup-field-sect dobDay">
+            <input type="text" class="form-control cc-card-info" data-stripe="dobMonth" placeholder="Day" ng-model="legal_entity.dob.day" aria-describedby="basic-addon1" data-stripe="dobDay" required>
+          </div>
+          <div class="col-xs-4 event-setup-field-sect dobYr">
+            <input type="text" class="form-control cc-card-info" data-stripe="dobMonth" placeholder="Year" ng-model="legal_entity.dob.year" aria-describedby="basic-addon1" data-stripe="dobYear" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt">Email</label>
+            <span class="create-event-error" ng-show="showEmailError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 event-setup-field-sect">
+            <input type="email" class="form-control cc-card-info" data-stripe="email" placeholder="{{ auth.email || 'example@example.com' }}" ng-model="email" name="email" aria-describedby="basic-addon1" required>
+          </div>
+        </div>
+
+
+        <h4> Account Information </h4>
+
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt">Routing Number</label>
+            <span class="create-event-error" ng-show="showRoutingError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" data-stripe="routingNumber" placeholder="Routing #" ng-model="bank_account.routing_number" aria-describedby="basic-addon1" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt">Account Number</label>
+            <span class="create-event-error" ng-show="showAccountError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" data-stripe="accountNumber" placeholder="Account #" ng-model="bank_account.account_number" aria-describedby="basic-addon1" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-7 event-setup-title-sect">
+            <label class="event-setup-label-txt">Account Type</label>
+            <span class="create-event-error" ng-show="showTypeError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+          <div class="col-xs-5 event-setup-title-sect">
+            <label class="event-setup-label-txt">Country</label>
+            <span class="create-event-error" ng-show="showCountryError === true"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-7 event-setup-field-sect">
+            <select class="form-control cc-card-info" ng-model="legal_entity.type" data-stripe="accountType" required>
+              <option value="individual">Individual</option>
+              <option value="company">Company</option>
+            </select>
+          </div>
+          <div class="col-xs-5 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" data-stripe="country" placeholder="US" ng-model="bank_account.country" aria-describedby="basic-addon1" required>
+          </div>
+        </div>
+
+      </form>
+
+      <button type="button" ng-click="doUpdatePayment()" ng-class="create-event-bottom-next-button" class="event-setup-btn-sav btn btn-primary payment-button">Save Account</button>
+
+      <p class='payment-aggreement'>* By clicking, you are agreeing to the Suaray Purchase Policy, Privacy Policy, and <a href="https://stripe.com/connect/account-terms" target="_blank">Stripe Connected Account Agreement.</a></p>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,41 @@
+<div ng-controller="TutorialController">
+
+  <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class="suaray-menu-btn back-button">
+      <span ng-click="showPrevView()" class="super-arrow-left-c"></span>
+    </div>
+
+    <div class="suaray-menu-title">
+      How It Works
+    </div>
+
+  </div>
+
+  <div class="suaray-body tutorial-body">
+
+    <div class="tutorial">
+
+      <div id="carousel-slide" class="tutorial-slider-container carousel slide" data-ride="carousel" ng-class="{ios: iOSStyles === true}">
+
+        <div class="carousel-inner" role="listbox">
+
+          <div class="item" ng-class="{active:$first}" ng-repeat="screen in tutorialScreens" data-role="tutorial-slide" ng-init="sectionIndex = $index" data-slide="next">
+
+            <div class="tutorial-photo-sect">
+
+              <img ng-model="screen" ng-src="{{ screen.url }}" alt="{{ screen.alt }}">
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

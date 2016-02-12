@@ -1,0 +1,27 @@
+<div ng-controller="AboutController">
+
+  <div id="suaray-nav" class="about-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class="suaray-menu-btn back-button">
+      <span ng-click="showSettings()" class="super-arrow-left-c"></span>
+    </div>
+
+    <div class="suaray-menu-title">
+      About
+    </div>
+
+  </div>
+
+  <div class="suaray-body about-body" data-role="about-body">
+
+    <h1>Suaray for<br><span ng-if="iOSStyles !== true">Android</span><span ng-if="iOSStyles === true">iOS</span></h1>
+
+    <p><a >Suaray</a> and the <a >Suaray</a> logos are trademarks of <a >SHINDiiG LLC.</a><br>All Rights Reserved</p>
+
+    <!-- <p>Suaray for <span ng-if="iOSStyles !== true">Android</span><span ng-if="iOSStyles === true">iOS</span> is built using open source software.<br> <a href="\#">View Licenses</a></p> -->
+
+    <p><a ng-click="showTerms()">Terms of Service</a></p>
+
+  </div>
+
+</div>

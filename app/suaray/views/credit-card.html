@@ -1,0 +1,79 @@
+<div ng-controller="CreditCardController">
+<div id = "suaray-nav" ng-class="{ios: iOSStyles === true}">
+  <div class = "suaray-menu-btn">
+    <super-navigate-back><i class="super-arrow-left-c"></i></super-navigate-back>
+  </div>
+  <div class = "suaray-menu-title">
+    Credit Card
+  </div>
+</div>
+        <div class = "suaray-body">
+                <div class = " cc-background">
+                        <div class="row">
+                                <div class="col-xs-12 cc-fields-sect">
+                                        <span class = "cc-field-label-txt">YOUR NAME</span><span class="cc-label-txt">&nbsp;&nbsp;Your first and last name</span>
+                                </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-xs-6 cc-fields-sect">
+                                        <input type="text" class="form-control cc-card-info" placeholder="David" aria-describedby="basic-addon1">
+                                </div>
+                                <div class="col-xs-6 cc-fields-sect">
+                                        <input type="text" class="form-control cc-card-info" placeholder="Albright" aria-describedby="basic-addon1">
+                                </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-xs-12  cc-fields-sect">
+                                        <span class = "cc-field-label-txt"> CARD NUMBER</span><span class="cc-label-txt">&nbsp;&nbsp;The 16 digit number on your card</span>
+                                </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-xs-12  cc-fields-sect">
+                                        <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" class="form-control cc-card-info" placeholder="4929 2229 0803 1230" aria-describedby="basic-addon1">
+                                </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-xs-12  cc-fields-sect">
+                                        <span class = "cc-field-label-txt">CVV</span><span class="cc-label-txt">&nbsp;&nbsp;&nbsp;&nbsp;The 3 digit security code on your card</span>
+                                </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-xs-5  cc-fields-sect">
+                                        <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" class="form-control cc-card-info" placeholder="943" aria-describedby="basic-addon1">
+                                </div>
+                        </div>
+                        <div class="row cc-fields-sect cc-fields-sect">
+                                <div class="col-xs-12">
+                                        <span class = "cc-field-label-txt"> EXPIRATION DATE</span>
+                                </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-xs-6 cc-fields-sect">
+                                        <input type="text" class="form-control cc-card-info" placeholder="August" aria-describedby="basic-addon1">
+                                </div>
+                                <div class="col-xs-6 cc-fields-sect">
+                                        <input type="text" class="form-control cc-card-info" placeholder="2016" aria-describedby="basic-addon1">
+                                </div>
+                        </div>
+                        <div class="row">
+                                <div class = "col-xs-3 cc-fields-sect">
+                                        <img src="/img/visa-logo.png" alt="...">
+                                </div>
+                                <div class = "col-xs-3 cc-fields-sect">
+                                        <img src="/img/amex-logo.png" alt="...">
+                                </div>
+                                <div class = "col-xs-3 cc-fields-sect">
+                                        <img src="/img/master-logo.png" alt="...">
+                                </div>
+                                <div class = "col-xs-3 cc-fields-sect">
+                                        <img src="/img/discover-logo.png" alt="...">
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <div class="continue-button cc-button-position">
+                <super-navigate location="suaray#event-detail">
+                        <button type="button" class="btn btn-lg btn-block continue-button">CONTINUE</button>
+                </super-navigate>
+        </div>
+</div>

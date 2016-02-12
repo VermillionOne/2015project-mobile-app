@@ -1,0 +1,30 @@
+<div ng-controller="DebugInfoController">
+  <div id = "suaray-nav" ng-class="{ios: iOSStyles === true}">
+    <div class="suaray-menu-btn back-button">
+      <span ng-click="showSettings()" class="super-arrow-left-c"></span>
+    </div>
+    <div class="suaray-menu-title">
+      Debug Info
+    </div>
+  </div>
+  <div class="suaray-body">
+    <div class="debug-info-body">
+      <form name="debug-info-form">
+        <label for="debug-comment">Full Name:</label>
+        <input type="text" name="debug-name" data-role="debug-name"></input>
+        <label for="debug-comment">Email:</label>
+        <input type="text" name="debug-name" data-role="debug-email"></input>
+        <label>Debug Info:</label>
+        <textarea data-role="text-original" rows="4" >{{debugInfo}}</textarea>
+        <button class="button button-block button-positive" ng-click="sendDebugInfo()">Send Debug Info to Suaray</button>
+      </form>
+
+      <div class="payment-successful" ng-show="debugSuccess === true">
+        <p>Your submission was succesful!</p>
+        <p>We will use this data to help improve Suaray.</p>
+        <button class="button button-block button-positive" ng-click="resetDebugInfo()">Return to Settings</button>
+      </div>
+
+    </div>
+  </div> <!-- end debug info body -->
+</div> <!-- end ng-controller="DebugInfoController" -->

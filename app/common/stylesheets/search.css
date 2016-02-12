@@ -1,0 +1,7 @@
+@media only screen and (max-width : 320px) {
+  #suaray-nav.ios .suaray-search-menu-title form {
+    width: 63%;
+    padding: 0;
+    margin: 12px 0 0 30px;
+  }
+}

@@ -1,0 +1,272 @@
+/***********************\
+|- My Tickets - Orders -|
+\***********************/
+.my-tickets-input {
+    text-transform: uppercase;
+}
+.my-tickets-search.bar.bar-header.item-input-inset {
+  background-color: #f2f2f2;
+  padding: 10px;
+  position: relative;
+  overflow: auto;
+  overflow: auto;
+  height: auto;
+}
+.my-tickets-search label.item-input-wrapper {
+  margin: 0px;
+  font-weight: 500;
+  font-size: 1.25em;
+  padding: 1px;
+  display: block;
+  position: relative;
+  overflow: visible;
+  border-radius: 3px;
+}
+.my-tickets-search.bar.item-input-inset .item-input-wrapper input {
+  font-size: 1em;
+  margin: 5px;
+  width: 87%;
+  height: 25px;
+}
+.my-tickets-search-clear-button.fa.fa-times-circle {
+  position: absolute;
+  display: block;
+  top: 6px;
+  right: 8px;
+  font-size: 1.25em;
+  opacity: .35;
+  color: #F00;
+}
+.my-tickets-search button.button.my-tickets-search-enter-button {
+  width: 25%;
+  background-color: #3496CF;
+  color: #fff;
+  border: 0px solid;
+  padding: 2px 0px 1px;
+  font-size: 1.1em;
+  font-weight: 700;
+}
+.my-tickets-search button.button.my-tickets-search-enter-button:after {
+  /*In Case This ever needs to be used*/
+}
+.my-tickets-order {
+  background-color: #999;
+  box-shadow: 0px 1px 2px rgba(0,0,0,.15);
+  font-weight: 300;
+  padding: 2px;
+  border-radius: 3px;
+  position: relative;
+  overflow: auto;
+  width: 95%;
+  margin: 10px;
+  table-layout: fixed;
+}
+.my-ticket-order-column-one {
+  width: 90%;
+}
+.my-tickets-order-column-two{
+  width: 5%;
+}
+.my-tickets-order-info-area {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  margin: 0px 0px 0px 0px;
+  float: left;
+  background-color: #fff;
+  min-height: 70px;
+  border: 1px #999 solid;
+  padding: 5px;
+  border-radius: 2px 1px 1px 2px;
+}
+.my-tickets-order-title-area {
+  position: relative;
+  overflow: auto;
+  display: block;
+  float: left;
+  width: 100%;
+}
+.my-tickets-order-ticket-code {
+  position: relative;
+  overflow: auto;
+  float: left;
+  margin: 0px;
+  font-family: inconsolata, monospace;
+  font-weight: 700;
+  font-size: 1.55em;
+}
+.my-tickets-order-ticket-event {
+  position: relative;
+  overflow: auto;
+  float: left;
+  width: 40%;
+  font-size: 1.05em;
+  margin: 5px 0px 0px 3%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #3496CF;
+}
+.my-tickets-order-ticket-event-start-date {
+  position: relative;
+  overflow: auto;
+  width: 36%;
+  background-color: #5bb85c;
+  float: right;
+  color: #fff;
+  font-weight: 700;
+  padding: 1px 0px 2px;
+  text-align: center;
+  border-radius: 3px;
+  font-size: 0.9em;
+  margin: 0px;
+}
+.my-tickets-order-ticket-event-start-time-hours {
+  position: relative;
+  overflow: auto;
+  float: right;
+  margin: 2px 1px 0px 0px;
+  font-size: .95em;
+  text-align: right;
+  width: 23%;
+  vertical-align: middle;
+}
+.my-tickets-order-ticket-event-start-time {
+  position: relative;
+  overflow: auto;
+  float: right;
+  margin: 2px 0px 0px 0px;
+  font-size: .95em;
+}
+.my-tickets-order-ticket-type-area {
+  position: relative;
+  overflow: auto;
+  display: block;
+  float: left;
+  width: 100%;
+}
+.my-tickets-order-ticket-type-title {
+  position: relative;
+  overflow: auto;
+  font-weight: 700;
+  font-size: 1.1em;
+  color: #535353;
+}
+.my-tickets-order-ticket-type-used,
+.my-tickets-order-ticket-type-available {
+  position: relative;
+  overflow: auto;
+  float: left;
+  width: 50%;
+}
+.my-tickets-order-summary-button {
+  vertical-align: middle;
+  padding: 0px 0px 0px 2.75%;
+  width: 10%;
+  overflow: hidden;
+}
+.my-tickets-order p.fa.fa-caret-right {
+  text-align: center;
+  color: #fff;
+  font-size: 4em;
+  margin: 0px;
+  text-shadow: 0px 2px 1px rgba(0,0,0,.25);
+}
+
+/*******************\
+|- Tickets Receipt -|
+\*******************/
+.ticket-receipt {
+  font-weight: 500;
+  padding-bottom: 20px;
+}
+.ticket-recipt-qr-code {
+  border: 15px solid #c1e9ff;
+  padding: 15px;
+  width: 90%;
+  max-width: 340px;
+  border-radius: 20px;
+  margin: 20px auto;
+  display: block;
+}
+.ticket-receipt-text-code {
+  width: 100%;
+  text-align: center;
+  font-family: inconsolata, monospace;
+  font-weight: 700;
+  font-size: 5.5em;
+}
+.ticket-receipt-event-title {
+  width: 90%;
+  margin: 20px auto;
+  font-weight: 700;
+  font-size: 1.5em;
+  color: #3b96cf;
+}
+.ticket-receipt-ticket-event-start-area,
+.ticket-receipt-ticket-types {
+  margin: 0px auto;
+  width: 90%;
+  position: relative;
+  overflow: auto;
+  overflow: auto;
+}
+.ticket-receipt-event-date {
+  position: relative;
+  overflow: auto;
+  background-color: #5bb85c;
+  float: left;
+  color: #fff;
+  font-weight: 700;
+  padding: 2px 5px;
+  text-align: center;
+  border-radius: 3px;
+  font-size: 1.25em;
+  margin: 0px;
+}
+.ticket-receipt-event-start-time {
+  float: right;
+  font-size: 1.25em;
+  text-align: right;
+  width: 30%;
+  padding: 2px 0px;
+}
+.ticket-receipt-event-start {
+  float: right;
+  font-size: 1.25em;
+  font-weight: 700;
+  margin: 0px;
+  padding: 2px 0px;
+}
+.ticket-receipt-tickets-purchased-title {
+  font-size: 1.65em;
+  width: 90%;
+  margin: 10px auto;
+}
+.ticket-receipt-ticket-type-title {
+  font-size: 1.35em;
+  font-weight: 700;
+  width: 100%;
+}
+.ticket-receipt-ticket-type-price {
+  border-bottom: 1px #999 solid;
+  color: #808080;
+  font-size: 1.2em;
+  overflow: auto;
+  position: relative;
+  overflow: auto;
+  width: 100%;
+}
+.ticket-receipt-ticket-type-unit-cost-times-amount {
+  float: left;
+}
+.ticket-receipt-ticket-type-price span.fa.fa-usd {
+  margin: 0px 5px 0px 0px;
+  color: #5bb85c;
+}
+.ticket-receipt-ticket-type-price span.fa.fa-times {
+  margin: 0px 10px;
+}
+.ticket-receipt-ticket-type-total {
+  float: right;
+}

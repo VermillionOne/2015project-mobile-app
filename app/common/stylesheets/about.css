@@ -1,0 +1,25 @@
+div#suaray-nav.about-nav {
+  background: rgba(0,0,0,0);
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  border: 0px solid;
+}
+.about-body {
+  background-color: #3496cf;
+  padding: 70px 50px;
+  color: #e9eef1;
+  height: 100vh;
+}
+.about-body h1 {
+  font-weight: 100;
+}
+.about-body p {
+  font-weight: 300;
+  margin: 20px 0px;
+}
+.about-body p sub {
+  font-weight: 500;
+  color: ;
+}
+.about-body p a {
+  color: #b5e9ff;
+}

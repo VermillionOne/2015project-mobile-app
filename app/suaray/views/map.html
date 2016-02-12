@@ -1,0 +1,41 @@
+<div ng-controller="MapController">
+
+  <div class="loading-overlay">
+    <div class="loading-login-top">
+      <div class="loader"></div>
+    </div>
+  </div>
+
+  <div id = "suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class = "suaray-menu-btn drawer-button">
+      <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars"></i>
+    </div>
+    <div class = "suaray-menu-title">
+      Map
+    </div>
+    <div class="suaray-menu-btn-right">
+      <button ng-click="backToYourLocation()" class="button button-small">
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <div id="panel">
+
+    <form data-role="map-event-search">
+      <div class="input-group">
+
+        <input id="address" type="text" class="form-control-map" ng-model="searchMap">
+
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit" ng-click="codeAddress()"><i class="fa fa-search"></i>
+          </button>
+        </span>
+
+      </div>
+    </form>
+
+  </div>
+  <div id="map"></div>
+</div>

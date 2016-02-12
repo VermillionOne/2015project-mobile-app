@@ -1,0 +1,58 @@
+<div ng-controller="SettingsController">
+  <div id = "suaray-nav" ng-class="{ios: iOSStyles === true}">
+    <div class = "suaray-menu-btn drawer-button">
+      <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars fa-fw"></i>
+    </div>
+    <div class = "suaray-menu-title">
+      Settings
+    </div>
+  </div>
+  <div class = "suaray-body" ng-class="{ios: iOSStyles === true}">
+    <div class="settings-body">
+      <ul class="settings-menu list-unstyled">
+        <li class="settings-menu-item" ng-click="showTutorial()">
+          <div class="settings-menu-list-item-icon-holder">
+            <span class="fa fa-question fa-fw"></span> <!-- Some Item Settings icon -->
+          </div> <!-- end settings-menu-list-item-icon-holder -->
+          <p class="settings-menu-list-item-name">Help</p> <!-- Some Item Setting Name  -->
+        </li> <!-- end settings-menu-item -->
+        <li class="settings-menu-item" ng-click="showAbout()">
+          <div class="settings-menu-list-item-icon-holder">
+            <span class="fa fa-info fa-fw"></span> <!-- Some Item Settings icon -->
+          </div> <!-- end settings-menu-list-item-icon-holder -->
+          <p class="settings-menu-list-item-name">About</p> <!-- Some Item Setting Name  -->
+        </li> <!-- end settings-menu-item -->
+        <li class="settings-menu-item" ng-click="showPayment()">
+          <div class="settings-menu-list-item-icon-holder">
+            <span class="fa fa-dollar fa-fw"></span> <!-- Some Item Settings icon -->
+          </div> <!-- end settings-menu-list-item-icon-holder -->
+          <p class="settings-menu-list-item-name">Payment</p> <!-- Some Item Setting Name  -->
+        </li> <!-- end settings-menu-item -->
+        <li class="settings-menu-item" ng-click="showDebugInfo()">
+          <div class="settings-menu-list-item-icon-holder">
+            <span class="fa fa-database fa-fw"></span> <!-- Some Item Settings icon -->
+          </div> <!-- end settings-menu-list-item-icon-holder -->
+          <p class="settings-menu-list-item-name">Debug Info</p> <!-- Some Item Setting Name  -->
+        </li> <!-- end settings-menu-item -->
+        <li class="settings-menu-item" ng-click="clearData()">
+          <div class="settings-menu-list-item-icon-holder">
+            <span class="fa fa-minus-square-o fa-fw"></span> <!-- Another Item Settings icon -->
+          </div> <!-- end settings-menu-list-item-icon-holder -->
+          <p class="settings-menu-list-item-name">Clear Data</p> <!-- Another Item Setting Name  -->
+        </li> <!-- end settings-menu-item -->
+        <!-- <li class="settings-menu-item" ng-click="showReportProblem()">
+          <div class="settings-menu-list-item-icon-holder">
+            <span class="fa fa-bullhorn fa-fw"></span> <!-- Promotion Settings icon
+          </div> <!-- end settings-menu-list-item-icon-holder
+          <p class="settings-menu-list-item-name">Report A Problem</p> <!-- Promotion Setting Name
+        </li> <!-- end settings-menu-item
+        <li class="settings-menu-item" ng-click="showTerms()">
+          <div class="settings-menu-list-item-icon-holder">
+            <span class="fa fa-certificate fa-fw"></span> <!-- Edit Settings icon
+          </div> <!-- end settings-menu-list-item-icon-holder
+          <p class="settings-menu-list-item-name">Terms &amp; Policies</p> <!-- Edit Setting Name
+        </li> <!-- end settings-menu-item -->
+      </ul> <!-- end settings-menu list-unstyled -->
+    </div> <!-- end settings-body -->
+  </div> <!-- end ng-controller="Settings" -->
+</div>

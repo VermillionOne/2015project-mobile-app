@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  <title><%= yield.viewName %></title>
+
+  <link href='https://fonts.googleapis.com/css?family=Raleway:300,700,500' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="/components/supersonic/css/supersonic.css" />
+  <link rel="stylesheet" type="text/css" href="/components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="/components/fontawesome/css/font-awesome.css" />
+  <link rel='stylesheet' type="text/css" href='/components/fullcalendar/dist/fullcalendar.css' />
+  <link rel="import" href="/components/supersonic/components/import.html">
+  <link rel="stylesheet" type="text/css" href="/components/ngImgCrop/compile/unminified/ng-img-crop.css">
+  <link rel="stylesheet" type="text/css" href="/app/common/stylesheets/application.css" />
+  <link rel="stylesheet" type="text/css" href="/app/common/stylesheets/home.css" />
+  <link rel="stylesheet" type="text/css" href="/app/common/stylesheets/category.css" />
+  <link rel="stylesheet" type="text/css" href="/app/common/stylesheets/my-tickets.css" />
+  <link rel="stylesheet" type="text/css" href="/app/common/stylesheets/event-detail.css" />
+  <link rel="stylesheet" type="text/css" href="/app/common/stylesheets/create-event.css" />
+  <link rel="stylesheet" type="text/css" href="/app/common/stylesheets/profile.css" />
+  <link rel="stylesheet" type="text/css" href="/app/common/stylesheets/checkin.css" />
+  <link rel="stylesheet" type="text/css" href="/app/common/stylesheets/drawer.css" />
+  <link rel="stylesheet" type="text/css" href="/app/common/stylesheets/settings.css" />
+  <link rel="stylesheet" type="text/css" href="/app/common/stylesheets/about.css" />
+  <link rel="stylesheet" type="text/css" href="/app/common/stylesheets/debug-info.css" />
+  <link rel="stylesheet" type="text/css" href="/app/common/stylesheets/search.css" />
+
+  <script src="http://localhost/cordova.js"></script>
+  <script src="/components/platform/platform.js"></script>
+  <script src="/components/steroids-js/steroids.js"></script>
+  <script src="/components/bugsnag/src/bugsnag.js" data-apikey="bb9a798ea99ea4b7db34ed27d5c7ac0a"></script>
+  <script src="/config/SuarayEnv.js"></script>
+  <script src="/config/SuarayVersion.js"></script>
+  <script src="/config/SuarayConfig.js"></script>
+  <script src="/config/SuarayDevice.js"></script>
+  <script src="/config/SuarayBugsnagConfig.js"></script>
+  <script src="/components/jquery/dist/jquery.js"></script>
+  <script src="/components/angular/angular.js"></script>
+  <script src="/components/angular-animate/angular-animate.js"></script>
+  <script src="/components/supersonic/supersonic.js"></script>
+  <script src="/components/webcomponentsjs/webcomponents.js"></script>
+  <script src="/components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="/components/lodash/dist/lodash.underscore.js"></script>
+  <script src="/components/jquery-touchswipe/jquery.touchSwipe.min.js"></script>
+  <script src="/components/bootstrap/js/carousel.js"></script>
+  <script src="/components/bootstrap/js/tab.js"></script>
+
+  <script src="https://maps.googleapis.com/maps/api/js"></script>
+  <script src="/components/ngImgCrop/compile/unminified/ng-img-crop.js"></script>
+  <script src="/components/ngCordova/dist/ng-cordova.js"></script>
+
+  <% _.each(yield.modules, function(module) { %>
+  <script src="/app/<%= module %>.js"></script>
+  <% }); %>
+
+</head>
+<body ng-app="<%= yield.moduleName %>">
+
+<%= yield.view %>
+
+</body>
+</html>

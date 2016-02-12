@@ -1,0 +1,87 @@
+<div ng-controller="SearchFilterController">
+
+  <div id = "suaray-nav" ng-class="{ios: iOSStyles === true}">
+    <div class = "suaray-menu-btn drawer-button">
+      <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars"></i>
+    </div>
+
+    <div class = "suaray-menu-title">
+      Filtered Search
+    </div>
+  </div>
+
+  <div class="advanced-search suaray-body" ng-class="{ios: iOSStyles === true}">
+
+    <div class="list">
+      <form data-role="filtered-search-results-form" ng-submit="doSearch()">
+
+        <label class="item item-input">
+          <i class="icon super-search placeholder-icon"></i>
+          <input type="text" placeholder="What're you looking for?" ng-model="query">
+        </label>
+
+        <label class="item item-input">
+          <i class="icon super-calendar placeholder-icon"><span> Date From</span></i>
+          <input type="date" class="search-date" ng-model="events.dateFrom">
+        </label>
+
+        <label class="item item-input">
+          <i class="icon super-calendar placeholder-icon"><span> Date To</span></i>
+          <input type="date" class="search-date" ng-model="events.dateTo">
+        </label>
+
+        <label class="item item-input">
+          <i class="icon super-location placeholder-icon"></i>
+          <input type="text" placeholder="City" ng-model="events.city">
+        </label>
+
+        <label class="item item-radio">
+          <input type="checkbox" name="featured" ng-true-value="1" ng-false-value="0" ng-model="events.featured">
+          <div class="item-content">
+            Featured
+          </div>
+          <i class="radio-icon super-checkmark"></i>
+        </label>
+
+        <label class="item item-radio">
+          <input type="checkbox" name="isIndoor"  ng-true-value="1" ng-false-value="0" id="events.isIndoor" ng-model="events.isIndoor" ng-init="events.isIndoor=0">
+          <div class="item-content">
+            Indoor
+          </div>
+          <i class="radio-icon super-checkmark"></i>
+        </label>
+
+        <label class="item item-radio">
+          <input type="checkbox" name="isOutdoor" ng-true-value="1" ng-false-value="0" id="events.isOutdoor" ng-model="events.isOutdoor" ng-init="events.isOutdoor=0">
+          <div class="item-content">
+            Outdoor
+          </div>
+          <i class="radio-icon super-checkmark"></i>
+        </label>
+
+        <label class="item item-radio">
+          <input type="checkbox" name="age" ng-true-value="1" ng-false-value="0" ng-model="events.isAdult" ng-init="events.isAdult=0">
+          <div class="item-content">
+            21 &amp; Over
+          </div>
+          <i class="radio-icon super-checkmark"></i>
+        </label>
+
+        <label class="item item-radio">
+          <input type="checkbox" name="upcoming" ng-model="events.upcoming">
+          <div class="item-content">
+            Show Upcoming Events 
+          </div>
+          <i class="radio-icon super-checkmark"></i>
+        </label>
+
+        <div class="padding">
+          <button type="submit" class="btn btn-primary button button-block">Search</button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
+</div>

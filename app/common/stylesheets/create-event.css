@@ -1,0 +1,59 @@
+.create-event-image-padding {
+  padding: 0px 0px 40px 0px;
+}
+.es-upload-btn span.event-setup-label-required {
+  position: absolute;
+  top: 10px;
+  right: 15%;
+}
+.create-event-error {
+  font-size: .65em;
+  display: inline-block;
+}
+.event-setup-label-required span.create-event-error {
+  margin: 0px 10px 0px 0px;
+}
+.event-setup-field-sect input.ng-invalid:focus {
+  box-shadow: inset 0px 1px 2px rgba(0,0,100,0.2), 0px 0px 8px rgba(255,0,0,.6);
+  transition: all .25s;
+  -webkit-transition: all .25s;
+  -o-transition: all .25s;
+}
+.event-setup-field-sect input.ng-valid:focus {
+  box-shadow: inset 0px 1px 2px rgba(0,0,100,0.2), 0px 0px 8px rgba(49,197,32,.6);
+  transition: all .25s;
+  -webkit-transition: all .25s;
+  -o-transition: all .25s;
+}
+.create-event-bottom-next-button {
+  position: fixed;
+  width: 100%;
+  height: 60px;
+  bottom: 0px;
+  z-index: 10;
+  margin: 0px;
+  border-radius: 0px;
+}
+.photo-preview {
+  padding: 10px 0 10px 0;
+}
+.photo-preview .photo-box {
+  display: inline-block;
+  margin: 0 10px 10px 0;
+}
+.photo-preview .photo-box img {
+  width: 100%:
+}
+.new-reservation-form {
+  padding: 0 0 80px 0;
+}
+.new-ticket-form {
+  padding: 0 0 50px 0;
+}
+.create-event-recurring-event {
+  padding: 0 0 80px 0;
+}
+.informative-text {
+  font-size: 11px;
+  font-weight: 300;
+}

@@ -1,0 +1,196 @@
+<div ng-controller="PublicProfileController">
+
+  <div class="loading-overlay">
+    <div class="loading-login-top">
+      <div class="loader"></div>
+    </div>
+  </div>
+
+  <div id = "suaray-nav" ng-class="{ios: iOSStyles === true}">
+    <div class = "suaray-menu-btn drawer-button">
+      <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars"></i>
+    </div>
+    <div class = "suaray-menu-title">
+      Profile
+    </div>
+  </div>
+
+  <div class = "suaray-body list">
+    <div class = "profile-container">
+      <div class = "profile-info">
+        <div class = "profile-pic-sect">
+          <div class = "profile-pic-main">
+
+            <img ng-src="{{user.avatar}}" ng-if="user.avatar">
+            <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="user.avatar === null">
+
+          </div>
+        </div>
+        <div class = "profile-presonal-info-sect profile-personal-info">
+
+          <div class = "profile-personal-info-name">{{ user.firstName }} {{ user.lastName }}</div>
+
+            <!-- If account linked to google, show information and means to view profile -->
+            <div class = "profile-personal-info-txt" ng-if="socialProfile === 'google' ">
+              <span class = "profile-personal-info-subtxt"><i class="fa fa-lg fa-google-plus-square"></i></span>
+              <span ng-if="user.social.google.username" ng-click="googlePlusLink()">{{ user.social.google.username }}</span>
+              <span ng-if="!user.social.google.username" ng-click="googlePlusLink()">{{ user.username }}</span>
+            </div>
+
+            <!-- If account linked to facebook, show information and means to view profile -->
+            <div class = "profile-personal-info-txt" ng-if="socialProfile === 'facebook' ">
+              <span class = "profile-personal-info-subtxt"><i class="fa fa-lg fa-facebook-square"></i></span>
+              <span ng-if="user.social.facebook.username" ng-click="facebookLink()">{{ user.social.facebook.username }}</span>
+              <span ng-if="!user.social.facebook.username" ng-click="facebookLink()">{{ user.username }}</span>
+            </div>
+
+            <!-- If account linked to twitter, show information and means to view profile -->
+            <div class = "profile-personal-info-txt" ng-if="socialProfile === 'twitter' ">
+              <span class = "profile-personal-info-subtxt"><i class="fa fa-lg fa-twitter"></i></span>
+              <span ng-if="user.social.twitter.username" ng-click="twitterLink()"> @{{ user.social.twitter.username }}</span>
+              <span ng-if="!user.social.twitter.username" ng-click="twitterLink()">{{ user.username }}</span>
+            </div>
+
+            <!-- If account linked to instagram, show information and means to view profile -->
+            <div class = "profile-personal-info-txt" ng-if="socialProfile === 'instagram' ">
+              <span class = "profile-personal-info-subtxt"><i class="fa fa-lg fa-instagram"></i></span>
+              <span ng-if="user.social.instagram.username" ng-click="instagramLink()">{{ user.social.instagram.username }}</span>
+              <span ng-if="!user.social.instagram.username" ng-click="instagramLink()">{{ user.username }}</span>
+            </div>
+
+            <!-- If no social accounts linked, defaults to email -->
+            <div class = "profile-personal-info-txt" ng-if="!socialProfile">
+              <span class = "profile-personal-info-subtxt">Email:</span> {{ user.email }}
+            </div>
+
+          <div class="profile-personal-info-txt">
+            <button ng-click="doCreateRequest()" class="btn btn-default friend-requester" ng-model="requestbtn" type="submit">
+              <span ng-hide="requestbtn">Friend Request</span>
+              <span ng-show="requestbtn">Requested</span>
+            </button>
+
+            <button class="btn btn-success friend-status">
+              Friends
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+      <div class = "profile-calendar-title">Social Schedule</div>
+
+      <div class = "profile-calendar">
+        <div id= "calendar"></div>
+      </div>
+
+    <div class="profile-my-events-sliders">
+      <div class="profile-my-events-slide-sect">
+        <div class = "profile-my-events-slide-title">{{ user.firstName }}'s Events</div>
+
+        <div class="event-slide-thumb">
+
+          <ul id="img-list" data-role="user-events-slider">
+
+            <li class="event-detail-related-event event-list" ng-repeat="event in eventsByUser" on-finish-my-events="ngRepeatFinished" ng-click="goToEventDetail(event.id)">
+              <super-navigate location="suaray#event-detail">
+
+                <img ng-src="{{event.featuredPhoto.url['114x88']}}">
+
+                <!-- If event does not have featured image, show default -->
+                <img ng-if="!event.featuredPhoto" ng-src="/img/generating-114x88.png">
+
+                <!-- Clickable overlay takes user to event detail -->
+                <div class="icon" ng-click="goToEventDetail(event.id)">
+                  <p class="my-event-text">{{ event.title }}</p>
+                </div>
+
+              </super-navigate>
+
+            </li>
+
+          </ul>
+
+        </div>
+
+        <li ng-show="!eventsByUser.length">
+          <div class="no-events-users">no events created</div>
+        </li>
+
+      </div>
+    </div>
+
+    <div id = "activity-wall-sect">
+
+      <div class = "activity-wall-title">Activity Wall</div>
+
+      <form data-role="update-wall" ng-show="isFriend">
+
+      <input type="hidden" name="userId" value="{{ auth.id }}">
+      <input type="hidden" name="updatesTime" value="{{ usersComments.createdAt }}">
+
+      <div class="profile-comment-input-container">
+        <div class="item item-input-inset event-detail-review-input-box">
+          <label class="item-input-wrapper event-detail-review-input-label">
+
+            <input type="text" data-role="comment-input" ng-model="update.message" name="message" placeholder="Comments">
+          </label> <!-- END Comment Input | item-input-wrapper -->
+        </div> <!-- END  | list event-detail-review-input-container -->
+
+        <div class = "activity-post-btn">
+          <button type="submit" class="btn btn-success btn-lg btn-block">Post</button>
+        </div>
+      </div>
+
+      </form>
+
+      <div class = "activity-comment">
+        <div class = "row" ng-repeat="userupdates in usersComments" ng-click="(!userupdates.friend) ? return : goToPublicProfile(userupdates.friend)">
+          <div class = "col">
+            <div class = "profile-pic-main" ng-if="userupdates.friend">
+
+              <img ng-src="{{userupdates.friend.avatar}}" ng-if="userupdates.friend.avatar">
+
+              <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="userupdates.friend.avatar === null">
+
+            </div>
+            <div class = "profile-pic-main" ng-if="!userupdates.friend">
+
+              <img ng-src="{{user.avatar}}" ng-if="user.avatar">
+
+              <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="user.avatar === null">
+
+            </div>
+
+          </div>
+
+          <div class = "col col-80">
+            <div class = "profile-comments-sect">
+              <div class = "col-holder">
+
+                <div class = "profile-usename-event" ng-if="!userupdates.friend">
+                  <div class = "profile-comments-username">{{ user.firstName }} {{ user.lastName }}</div>
+                </div>
+                <div class = "profile-usename-event" ng-if="userupdates.friend">
+                  <div class = "profile-comments-username">{{ userupdates.friend.firstName }} {{ userupdates.friend.lastName }}</div>
+                </div>
+              </div>
+
+              <div class = "profile-comments-desc public-profile-comments-desc">{{ userupdates.message }} </div>
+
+              <div class = "profile-comment-postdate">
+                 <i class="fa fa-clock-o"></i> {{ userupdates.createdAt }}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/components/jquery/dist/jquery.js" /></script>
+<script src='/components/moment/moment.js'></script>
+<script src="/components/fullcalendar/dist/fullcalendar.js"></script>

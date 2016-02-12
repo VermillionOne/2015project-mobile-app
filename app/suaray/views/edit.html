@@ -1,0 +1,799 @@
+<div ng-controller="EventEditController">
+
+  <div class="loading-overlay">
+    <div class="loading-login-top">
+      <div class="loader"></div>
+    </div>
+  </div>
+
+  <!-- *********************
+  Begin CREDIT CARD SECTION
+  ********************** -->
+  <div ng-show="page === 'payment'">
+
+    <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+      <div class="suaray-menu-btn" ng-click="closeModal()"><span class="fa fa-angle-left"></span></div>
+      <div class="suaray-menu-title">
+        Payment Method
+      </div>
+
+      <!-- Will only show next arror upon success of payment -->
+      <div class="suaray-menu-btn-right" ng-show="successShow === 'success'" ng-click="paymentNext()">
+        <span class="fa fa-angle-right"></span>
+      </div>
+
+    </div>
+
+    <div class="create-background create-scroll" data-role="full-screen-height">
+
+      <form id="payment-form" data-role="payment-form" novalidate>
+
+        <!-- Will show error messages returned from stripe -->
+        <p class="payment-errors">{{response.error.message}}</p>
+
+        <div class="row">
+          <div class="col event-setup-title-sect">
+            <label class="event-setup-label-txt">Name On Card</label>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" data-stripe="name" ng-model="userBilling.name" placeholder="Full Name" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col col-75 event-setup-title-sect">
+            <label class="event-setup-label-txt">Card Number</label>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+
+          <div class="col col-25 event-setup-title-sect">
+            <label class="event-setup-label-txt">CVV</label>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col col-75 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" data-stripe="number" ng-model="userBilling.cardNumber" placeholder="0000-0000-0000-0000" required>
+          </div>
+
+          <div class="col col-25 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" data-stripe="cvc" ng-model="userBilling.cvv" placeholder="000" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col event-setup-title-sect">
+            <label class="event-setup-label-txt">Expiration Date</label>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <!-- CVV & Expiration Date field -->
+        <div class="row">
+          <div class="col col-33 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" ng-model="userBilling.expirationMonth" data-stripe="exp-month" placeholder="MM" required>
+          </div>
+
+          <div class="col col-33 event-setup-field-sect">
+            <input type="text"  class="form-control cc-card-info" ng-model="userBilling.expirationYear" data-stripe="exp-year" placeholder="YYYY" required>
+          </div>
+
+        </div>
+
+        <!-- Email Label -->
+        <div class="row">
+          <div class="col event-setup-title-sect">
+            <label class="event-setup-label-txt">Email</label>
+            <span class="create-event-error" ng-show="showLocationRequiredFields === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <!-- Email Input -->
+        <div class="row">
+          <div class="col event-setup-field-sect">
+            <input type="email" class="form-control cc-card-info" placeholder="example@email.com" ng-model="userBilling.email" name="email" aria-describedby="basic-addon1" required>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col event-setup-title-sect">
+            <label class="event-setup-label-txt">Address</label>
+            <span class="create-event-error" ng-show="addressRequired === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info"  id="address" name="address" ng-model="userBilling.address" placeholder="123 Showfun Drive">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col col-75 event-setup-title-sect">
+            <label class="event-setup-label-txt">City</label>
+
+            <span class="create-event-error" ng-show="cityRequired === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+
+          <div class="col col-25 event-setup-title-sect">
+            <label class="event-setup-label-txt">State</label>
+
+            <span class="create-event-error" ng-show="stateRequired === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col col-75 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" id="city" name="city" ng-model="userBilling.city" placeholder="Las Vegas">
+          </div>
+
+          <div class="col col-25 event-setup-field-sect">
+
+            <!-- Select box for state option -->
+            <select class="form-control cc-card-info" ng-model="userBilling.state" id="state" name="state">
+              <option ng-repeat="state in usStates" value='{{ userBilling.state }}'>{{state}}</option>
+            </select>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col event-setup-title-sect">
+            <label class="event-setup-label-txt">Zip Code</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col col-33 event-setup-field-sect">
+            <input type="text"  class="form-control cc-card-info" data-stripe="address_zip" ng-model="userBilling.zip" placeholder="00000">
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-xs-3 cc-fields-sect">
+            <img src="/img/visa-logo.png" alt="...">
+          </div>
+
+          <div class="col-xs-3 cc-fields-sect">
+            <img src="/img/amex-logo.png" alt="...">
+          </div>
+
+          <div class="col-xs-3 cc-fields-sect">
+            <img src="/img/master-logo.png" alt="...">
+          </div>
+
+          <div class="col-xs-3 cc-fields-sect">
+            <img src="/img/discover-logo.png" alt="...">
+          </div>
+
+        </div>
+
+        <div class="padding-horizontal">
+          <!-- Confirmation that payment was successful -->
+          <div class="payment-success" ng-show="successShow === 'success'">
+            <p>Card Accepted</p>
+          </div>
+
+          <span class="payment-success" data-role="show-success" ng-click="showSuccess()"></span>
+
+          <!-- Submit for stripe form -->
+          <button type="submit" class="button button-block button-balanced tickets-submit-button">
+            Purchase Premium
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- *********************
+  Begin DETAIL SECTION
+  ********************** -->
+
+  <form route="events.update" name="updateEventForm" novalidate>
+
+    <div ng-show="page === 'details'">
+
+      <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+        <div class="suaray-menu-btn" ng-show="free === 'true'" ng-click="closeModal()"><span class="fa fa-angle-left"></span></div>
+
+        <div class="suaray-menu-btn" ng-hide="free === 'true'" ng-click="page = 'payment'"><span class="fa fa-angle-left"></span></div>
+
+        <div class="suaray-menu-title">
+          Details
+        </div>
+
+        <div class="suaray-menu-btn-right" ng-click="detailsNext()">
+          <span class="fa fa-angle-right"></span>
+        </div>
+
+      </div>
+
+      <div class="create-background edit-background" data-role="full-screen-height">
+
+        <!-- TITLE-lable -->
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt">Title</label>
+            <!-- IF ERROR - show error icon -->
+            <span class="create-event-error" ng-show="titleRequired === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <!-- title-field -->
+        <div class="row eventsetup-margin">
+
+          <div class="col-xs-12 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="event.title" data-role="title" name="title" aria-describedby="basic-addon1" required>
+            <span class="create-event-error" ng-if="error.title"><i class="fa fa-exclamation fa-inverse"></i> {{error.title[0]}}</span>
+          </div>
+
+         </div>
+
+        <!-- DESCRIPTION -label -->
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt">Description</label>
+            <span class="create-event-error" ng-show="descriptionRequired === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <!-- description -field -->
+        <div class="row eventsetup-margin">
+          <div class="col-xs-12 event-setup-field-sect">
+            <textarea class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-model="event.description" name="description" required></textarea>
+          </div>
+        </div>
+
+        <!-- CATEGORY field -->
+        <div class="row">
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">Category</label>
+            <span class="create-event-error" ng-show="tagsRequired === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <!-- CATEGORY field -->
+        <div class="row eventsetup-margin">
+          <div class="col-xs-12 event-setup-field-sect">
+            <select class="form-control category-select" ng-options="category.tag for category in categories track by category.tag" ng-model="event.category" required >
+            </select>
+            <span class="create-event-error" ng-if="errorList[0] === ''"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+
+        <!-- TAGS field -->
+        <div class="row">
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">Keywords</label>
+            <span class="create-event-error" ng-show="tagsRequired === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <!-- Tags field -->
+        <div class="row eventsetup-margin">
+          <div class="col-xs-12 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="event.tags" name="tags" aria-describedby="basic-addon1" required>
+            <span class="create-event-error" ng-if="errorList[0] === 'Max amount of tags are 5 for each event'"><i class="fa fa-exclamation fa-inverse"></i> Tags are limited to 5 per event.</span>
+          </div>
+        </div>
+
+        <!-- Checkboxes  -->
+        <ul class="list options-list">
+
+          <li class="item item-toggle">
+            Indoor
+            <label class="toggle">
+              <input name="isIndoor" value="1" ng-model="event.isIndoor" type="checkbox">
+              <div class="track">
+                <div class="handle"></div>
+              </div>
+            </label>
+          </li>
+
+          <li class="item item-toggle">
+            Outdoor
+            <label class="toggle toggle-calm">
+              <input class="checkbox" name="isOutdoor" value="1" ng-model="event.isOutdoor" type="checkbox">
+              <div class="track">
+                <div class="handle"></div>
+              </div>
+            </label>
+          </li>
+
+          <li class="item item-toggle">
+            21 &amp; Over
+            <label class="toggle toggle-calm">
+              <input class="checkbox" name="isAdult" value="1" ng-model="event.isAdult" type="checkbox">
+              <div class="track">
+                <div class="handle"></div>
+              </div>
+            </label>
+          </li>
+
+        </ul>
+
+        <!-- UPLOAD PHOTOS ICON/LINK -->
+        <div class="upload-sect">
+          <div>
+            <div ng-click="userPhoto()" class="es-upload-btn">
+              <img src="/img/uploadbtn.png">
+            </div>
+          </div>
+          <p class="upload-result" ng-show="imageUploaded">Photo Uploaded<span class="fa fa-check"></span></p>
+
+          <!-- This span required to activate $scope change on photo upload tags -->
+          <span ng-click="successfulUpload()" data-role="hide-upload"></span>
+
+          <!-- This is where any current photos are shown -->
+          <div ng-show="event.photos.length > 0" class="event-photos-container photo-preview" ng-model="event.photos">
+            <div class="photo-box" ng-repeat="photo in event.photos">
+              <img ng-src="{{ photo.url['114x88'] }}">
+            </div>
+          </div>
+
+          <button type="button" ng-click="detailsNext()" ng-class="create-event-bottom-next-button" class="event-setup-btn-sav">Next<span class="fa fa-angle-right fa-lg"></span></button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- *********************
+    Begin LOCATION SECTION
+    ********************** -->
+
+    <div ng-show="page === 'location'">
+
+      <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+        <div class="suaray-menu-btn" ng-click="page = 'details'"><span class="fa fa-angle-left"></span></div>
+        <div class="suaray-menu-title">
+          Location
+        </div>
+        <div class="suaray-menu-btn-right" ng-click="locationNext()"><span class="fa fa-angle-right"></span></div>
+      </div>
+
+      <div class="create-background" data-role="full-screen-height">
+
+        <!-- Venue-label -->
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt">Venue</label>
+          </div>
+        </div>
+
+        <!-- Venue-field -->
+        <div class="row eventsetup-margin">
+          <div class="col-xs-12 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="event.venueName" name="venueName" aria-describedby="basic-addon1">
+          </div>
+        </div>
+
+        <!-- Address-label -->
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt">Address</label>
+            <span class="create-event-error" ng-show="showLocationRequiredFields === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+        </div>
+
+        <!-- Address-field -->
+        <div class="row eventsetup-margin">
+          <div class="col-xs-12 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" ng-model="event.address1" name="" aria-describedby="basic-addon1" required>
+            <span class="create-event-error" ng-if="error.address1"><i class="fa fa-exclamation fa-inverse"></i> Address is required.</span>
+          </div>
+        </div>
+
+        <!-- City Label -->
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt">City</label>
+          </div>
+        </div>
+
+        <!-- City field -->
+        <div class="row eventsetup-margin">
+          <div class="col-xs-12 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="event.city" name="" aria-describedby="basic-addon1">
+          </div>
+        </div>
+
+        <!-- State & Zipcode fields -->
+        <div class="row eventsetup-margin">
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">State</label>
+          </div>
+          <div class="event-setup-title-sect event-setup-zipcode">
+            <label class="event-setup-label-txt">Zipcode</label>
+            <span class="create-event-error" max-value="5" ng-show="showLocationRequiredFields === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+
+        <!-- State & Zipcode fields -->
+        <div class="row eventsetup-margin">
+
+          <div class="col-xs-6 event-setup-field-sect">
+            <select class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="event.state" name="" aria-describedby="basic-addon1" ng-options="s for s in usStates track by s">
+            </select>
+          </div>
+
+          <div class="col-xs-6 event-setup-field-sect">
+            <input type="text" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="event.zipcode" name="" aria-describedby="basic-addon1" required>
+            <span class="create-event-error" ng-if="error.zipcode"><i class="fa fa-exclamation fa-inverse"></i> Zipcode is required.</span>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+
+        </div>
+
+        <button type="button" ng-click="locationNext()" ng-class="create-event-bottom-next-button" class="event-setup-btn-sav">Next<span class="fa fa-angle-right fa-lg"></span></button>
+
+      </div>
+
+    </div>
+
+    <!-- *********************
+    Begin TIME AND DATE SECTION
+    ********************** -->
+
+    <div ng-show="page === 'time'">
+
+      <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+        <div class="suaray-menu-btn" ng-click="page = 'location'"><span class="fa fa-angle-left"></span></div>
+
+        <div class="suaray-menu-title">
+          Time And Date
+        </div>
+        <div class="suaray-menu-btn-right" ng-click="timeNext()"><span class="fa fa-angle-right"></span></div>
+      </div>
+
+      <div class="create-background page-location-background" data-role="full-screen-height">
+
+        <!-- FROM/TO-labels -->
+        <div class="row">
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">Start Date</label>
+            <span class="create-event-error" ng-show="showTimeRequiredFields === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">End Date</label>
+            <span class="create-event-error" ng-show="showTimeRequiredFields === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+
+        <!-- date range-fields -->
+        <div class="row eventsetup-margin">
+
+          <div class="col-xs-6 event-setup-field-sect">
+            <input required type="date" class="form-control start-date cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="event.startDate" name="" aria-describedby="basic-addon1" required>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+
+          <div class="col-xs-6 event-setup-field-sect">
+            <input required type="date" class="form-control end-date cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="event.endDate" name="" aria-describedby="basic-addon1" required>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+
+        </div>
+
+        <!-- DATE RANGE -->
+        <!-- FROM/TO-labels -->
+        <div class="row">
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">Start Time</label>
+            <span class="create-event-error" ng-show="showTimeRequiredFields === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+          <div class="col-xs-6 event-setup-title-sect">
+            <label class="event-setup-label-txt">End Time</label>
+            <span class="create-event-error" ng-show="showTimeRequiredFields === 'true'"><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+
+        <!-- date range-fields -->
+        <div class="row eventsetup-margin">
+
+          <div class="col-xs-6 event-setup-field-sect">
+            <input required type="time" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="event.startTime" name="starTime" aria-describedby="basic-addon1" required>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+
+          <div class="col-xs-6 event-setup-field-sect">
+            <input required type="time" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="event.endTime" name="endTime" aria-describedby="basic-addon1" required>
+            <span class="event-setup-label-required">*Required</span>
+          </div>
+
+        </div>
+
+        <!-- Time Zone -->
+        <div class="row">
+          <div class="col-xs-12 event-setup-title-sect">
+            <label class="event-setup-label-txt">Time Zone</label>
+            <span class="create-event-error" ng-show=""><i class="fa fa-exclamation fa-inverse"></i></span>
+          </div>
+        </div>
+
+        <div class="row eventsetup-margin">
+          <div class="col-xs-12 event-setup-field-sect">
+            <select class="form-control cc-card-info" required ng-model="event.timezoneId" ng-options="timezone.id as timezone.zoneName for timezone in timezones track by timezone.id" required> <span class="event-setup-label-required">*Required</span>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+
+          <div class="create-event-recurring-checkbox col-xs-12">
+
+            <label class="control-label event-setup-label-txt">
+              <input class="cc-card-info" ng-model="event.repeatEnabled" ng-true-value="true" ng-false-value="false" name="recurring" type="checkbox" value="recurring">Recurring
+            </label>
+
+          </div>
+
+        </div>
+
+        <div class="create-event-recurring-event row" ng-if="event.repeatEnabled">
+
+          <!-- 'Repeats' Input Field -->
+          <div class="form-group col-xs-5">
+            <label class="event-setup-label-txt">Repeats
+              <select class="form-control cc-card-info" ng-options="repeatList.name as repeatList.value for repeatList in repeatList" ng-model="event.repeats" id="repeats" name="repeats"></select>
+            </label>
+          </div>
+
+          <!-- 'Repeats Every' Input Field -->
+          <div class="form-group">
+            <label class="event-setup-label-txt">Every
+              <select class="form-control cc-card-info" ng-options="n for n in interval" ng-model="event.repeatEvery" id="repeatEvery" name="repeatEvery"></select>
+            </label>
+          </div>
+
+          <!-- Shows if Daily is picked -->
+          <div class="form-group create-event-repeat-every-interim" ng-show="event.repeats === 'daily'">
+            <label class="clearfix control-label">Day<span ng-if="event.repeatEvery > 1">s</span></label>
+          </div>
+
+          <!-- Shows if Weekly is picked -->
+          <div class="form-group create-event-repeat-every-interim" ng-show="event.repeats === 'weekly'">
+            <label class="clearfix control-label">Week<span ng-if="event.repeatEvery > 1">s</span></label>
+          </div>
+
+          <!-- Shows if Monthly is picked -->
+          <div class="form-group create-event-repeat-every-interim" ng-show="event.repeats === 'monthly'">
+            <label class="clearfix control-label">Month<span ng-if="event.repeatEvery > 1">s</span></label>
+          </div>
+
+          <!-- Shows if Yearly is picked -->
+          <div class="form-group create-event-repeat-every-interim" ng-show="event.repeats === 'yearly'">
+            <label class="clearfix control-label">Year<span ng-if="event.repeatEvery > 1">s</span></label>
+          </div>
+
+        </div>
+
+        <div class="create-event-recurring-event row" ng-if="event.repeatEnabled">
+          <!-- Repeats End Dates -->
+          <div class="form-group col-xs-6">
+            <label class="clearfix event-setup-label-txt">End Date
+              <input required type="date" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="event.repeatEnd" name="repeatEnd" aria-describedby="basic-addon1" required>
+
+            </label>
+          </div>
+          <div class="form-group">
+            <label class='event-setup-label-txt'>End Time
+              <input required type="time" class="form-control cc-card-info" ng-focus="nextBtn = 'bottom-position'" ng-blur="nextBtn = ''" ng-model="event.repeatEndTime" name="repeatEndTime" aria-describedby="basic-addon1" required>
+            </label>
+          </div>
+
+        </div>
+
+        <div class="form-group weekly-repeats col-xs-12" ng-show="event.repeats === 'weekly' && event.repeatEnabled">
+
+          <label class="control-label col-xs-12" >Repeats on:</label>
+
+          <ul class="create-event-recurring-days-of-week">
+            <li><label class="control-label"><input data-role="day-of-week-sun" name="weekdays" type="checkbox" value="sun">&nbsp;&nbsp;Su</label></li>
+            <li><label class="control-label"><input data-role="day-of-week-mon" name="weekdays" type="checkbox" value="mon">&nbsp;&nbsp;Mo</label></li>
+            <li><label class="control-label"><input data-role="day-of-week-tue" name="weekdays" type="checkbox" value="tue">&nbsp;&nbsp;Tu</label></li>
+            <li><label class="control-label"><input data-role="day-of-week-wed" name="weekdays" type="checkbox" value="wed">&nbsp;&nbsp;We</label></li>
+            <li><label class="control-label"><input data-role="day-of-week-thu" name="weekdays" type="checkbox" value="thu">&nbsp;&nbsp;Th</label></li>
+            <li><label class="control-label"><input data-role="day-of-week-fri" name="weekdays" type="checkbox" value="fri">&nbsp;&nbsp;Fr</label></li>
+            <li><label class="control-label"><input data-role="day-of-week-sat" name="weekdays" type="checkbox" value="sat">&nbsp;&nbsp;Sa</label></li>
+          </ul>
+
+          <input data-role="daysOfWeek" ng-model="event.daysOfWeek" name="daysOfWeek" type="hidden" value="">
+
+        </div>
+
+        <button type="button" ng-click="timeNext()" ng-class="create-event-bottom-next-button" class="event-setup-btn-sav">Next<span class="fa fa-angle-right fa-lg"></span></button>
+
+      </div>
+    </div>
+
+    <!-- *********************
+    Begin OPTIONS SECTION
+    ********************** -->
+
+    <div ng-show="page === 'options'">
+
+      <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+        <div class="suaray-menu-btn" ng-click="page = 'time'"><span class="fa fa-angle-left"></span></div>
+        <div class="suaray-menu-title">
+          Options
+        </div>
+      </div>
+
+      <div class="create-background create-options" data-role="full-screen-height">
+
+        <ul class="list options-list" ng-hide="successPremiumShow === 'success'">
+
+          <li class="item item-toggle">
+            Polls
+           <label class="toggle toggle-calm">
+             <input type="checkbox" data-role="polls-on" ng-model="event.meta.polls.enabled" autocomplete="off">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+           </label>
+          </li>
+
+          <li class="item item-toggle">
+            Comments
+             <label class="toggle toggle-calm">
+               <input type="checkbox" data-role="comment-on" ng-model="event.meta.comments.enabled" autocomplete="off">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+
+          <li class="item item-toggle">
+            Maps
+           <label class="toggle toggle-calm">
+             <input type="checkbox" data-role="maps-on" ng-model="event.meta.map.enabled" autocomplete="off">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+           </label>
+          </li>
+
+          <li class="item item-toggle">
+            Event Pictures
+           <label class="toggle toggle-calm">
+             <input type="checkbox" data-role="event-pictures-on" ng-model="event.meta.photos.enabled" autocomplete="off">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+           </label>
+          </li>
+
+          <li class="item item-toggle">
+            Reviews
+             <label class="toggle toggle-calm">
+               <input type="checkbox" data-role="reviews-on" ng-model="event.meta.reviews.enabled" autocomplete="off">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+
+          <li class="item item-toggle" ng-show="free === null">
+            Tickets
+           <label class="toggle toggle-calm">
+             <input type="checkbox" data-role="tickets-on" ng-model="event.meta.tickets.enabled" autocomplete="off">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+           </label>
+          </li>
+
+          <li class="item item-toggle">
+            RSVP
+             <label class="toggle toggle-calm">
+               <input type="checkbox" data-role="rsvp-on" ng-model="event.meta.rsvp.enabled" autocomplete="off">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+
+          <li class="item item-toggle" ng-show="free === null">
+            Transportation
+             <label class="toggle toggle-calm">
+               <input type="checkbox" data-role="transportation-on" ng-model="event.meta.transportation.enabled" autocomplete="off">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+
+        </ul>
+
+        <button type="button" ng-click="doUpdateEvent()" ng-class="create-event-bottom-next-button" class="event-setup-btn-sav">Update Event</button>
+
+      </div>
+    </div>
+  </form>
+
+  <!-- *********************
+  Begin OPTIONS SECTION
+  ********************** -->
+
+  <div ng-show="page === 'success'">
+
+    <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+      <div class="suaray-menu-title">
+        Success!
+      </div>
+    </div>
+
+    <div class="create-background create-options" data-role="full-screen-height">
+
+      <div class="premium-create-success"  ng-show="successFreeShow === true">
+
+        <div class="panel create-event-panel">
+
+          <div class="panel-heading free-premium row flat">
+
+            <p class="panel-title">Event Updated!</p>
+
+          </div>
+
+          <div class="panel-body free-premium">
+
+            <div class="col create-select">
+              <div class="freemium-icon-holder fa-stack fa-lg create-event-free">
+                <i class="fa fa-star fa-stack-2x"></i>
+              </div>
+            </div>
+
+            <p class="premium-success-text">Your event has been successfully updated.</p>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="premium-create-success"  ng-show="successPremiumShow === true">
+
+        <div class="panel create-event-panel">
+
+          <div class="panel-heading free-premium row flat">
+
+            <p class="panel-title">Event Updated!</p>
+
+          </div>
+
+          <div class="panel-body free-premium">
+
+            <div class="col create-select">
+              <div class="freemium-icon-holder fa-stack fa-lg create-event-premium">
+                <i class="fa fa-certificate fa-stack-2x"></i>
+                <i class="fa fa-star-o fa-stack-1x fa-inverse"></i>
+              </div>
+            </div>
+
+            <p class="premium-success-text">Your premium event has been successfully updated.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script src="/components/evaporatejs/evaporate.js"></script>

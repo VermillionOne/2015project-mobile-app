@@ -1,0 +1,78 @@
+<div ng-controller="SignUpController"  class="sign-up-overlay">
+  <div id = "suaray-nav" ng-class="{ios: iOSStyles === true}">
+    <div class="suaray-menu-btn back-button">
+      <span ng-click="showSignIn()" class="icon super-arrow-left-c"></span>
+    </div>
+    <div class = "suaray-menu-title">
+      Sign Up
+    </div>
+  </div>
+
+  <div>
+    <div class ="sign-up-logo">
+      <img src="/img/login-logo.png">
+    </div>
+
+    <!-- Displays errors if form submitted without info -->
+    <p class="signup-error" ng-repeat="error in errorList track by $index"><i class="fa fa-exclamation-circle fa-inverse"></i> {{error}}</p>
+
+    <form name="userForm" novalidate>
+
+      <!-- Email input -->
+      <div class="sign-up-fields" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
+        <div class="field-icon">
+          <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+        </div>
+        <input type="email" class="home-login form-control" placeholder="Email Address" id="email" name="email" ng-model="user.email" required ng-pattern="userValidation.email">
+        <p ng-show="submitted && userForm.email.$error.required" class="sign-up-alert">Required Field</p>
+        <p ng-show="userForm.email.$error.email" class="sign-up-alert">Enter a valid email.</p>
+      </div>
+
+      <!-- Password -->
+      <div class="sign-up-fields" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
+        <div class="field-icon">
+          <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+        </div>
+        <input type="password" placeholder="Password" id="password" name="password" class="home-login form-control" ng-model="user.password" ng-minlength="6" ng-pattern="" required>
+        <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="sign-up-alert">Your password must be at least 6 characters.</p>
+      </div>
+
+      <!-- Password confirmation -->
+      <div class="sign-up-fields" ng-class="{ 'has-error' : userForm.passwordConfirmation.$invalid && !userForm.passwordConfirmation.$pristine }">
+        <div class="field-icon">
+          <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+        </div>
+        <input type="password" class="home-login form-control" placeholder="Confirm Password" id="passwordConfirmation" name="passwordConfirmation" same-as="user.password" ng-model="user.passwordConfirmation" ng-minlength="6" ng-pattern="" required>
+        <p ng-show="userForm.passwordConfirmation.$invalid && !userForm.passwordConfirmation.$pristine" class="sign-up-alert">Your passwords must match.</p>
+      </div>
+
+      <!-- Full name -->
+      <div class="sign-up-fields" ng-class="{ 'has-error' : userForm.fullName.$invalid && !userForm.fullName.$pristine }">
+        <div class="field-icon">
+          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+        </div>
+        <input type="text" class="home-login form-control" placeholder="Full Name" id="fullName" name="fullName" ng-model="user.fullName" required>
+        <p ng-show="userForm.fullName.$invalid && !userForm.fullName.$pristine" class="sign-up-alert">Name field required.</p>
+      </div>
+
+      <div class="login-fields">
+        <div class="field-icon">
+          <input type="checkbox" ng-model="agreedToTerms"
+            name="agreedToTerms" id="agreedToTerms" required/>
+          <label for="agreedToTerms">I agree to the <a class="terms-text" ng-click="showTerms()">Terms and Conditions</a></label>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="loading-login" ng-show="loading">
+        <div class="login-loading"><i class="fa fa-spinner fa-lg fa-pulse fa-inverse"></i></div>
+      </div>
+
+      <div class="login-btn">
+        <button type="submit" class="btn btn-login btn-lg btn-block" ng-disabled="userForm.$invalid" ng-click="doCreateAccount()">SIGN UP</button>
+      </div>
+
+    </form>
+  </div>
+  </div>

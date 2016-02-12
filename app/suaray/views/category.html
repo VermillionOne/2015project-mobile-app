@@ -1,0 +1,29 @@
+<div ng-controller="CategoryController">
+
+  <div id = "suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class = "suaray-menu-btn drawer-button">
+      <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars"></i>
+    </div>
+
+    <div class = "suaray-menu-title">
+      Categories
+    </div>
+
+  </div>
+
+  <div class = "suaray-body">
+
+    <div class="list">
+
+      <div class="category-item item item-icon-left item-icon-right" ng-repeat="tag in tags" ng-click="setCategory(tag.tag)">
+        <i class="category icon {{tag.icon}}" style="color: {{tag.color}}"></i>
+        {{tag.tag}}
+        <i class="category icon fa fa-angle-right"></i>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

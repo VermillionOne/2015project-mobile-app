@@ -1,0 +1,205 @@
+<div ng-controller="CheckInController">
+
+  <div id = "suaray-nav" ng-class="{ios: iOSStyles === true}">
+
+    <div class = "suaray-menu-btn drawer-button">
+      <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars"></i>
+    </div>
+
+    <div class = "suaray-menu-title">
+      Check-In
+    </div>
+
+    <div class="suaray-menu-btn-right" >
+      <span class="fa fa-camera" ng-show="barcode === true" ng-click="scan()"></span>
+    </div>
+
+  </div>
+
+  <div class="suaray-body check-in-body" ng-class="{ios: iOSStyles === true}">
+
+    <div class="top-wrapper row">
+
+      <div class="col col-50 check-in-top-row" ng-click="ticketCheckIn()">
+
+        <div class="check-in-label inline-box check-in-active">
+          <i class="fa fa-ticket"></i>
+          <label> Ticket Check-In </label>
+        </div>
+
+      </div>
+
+      <div class="col col-50 check-in-top-row" ng-click="ticketHistory()">
+
+        <div class="check-in-history inline-box">
+          <i class="fa fa-history"></i>
+          <label> Check-In History</label>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- ticket check in section -->
+    <div class="tab-pane" id="check-in">
+
+      <div class="input-wrapper row">
+
+        <div class="col col-75 input-box">
+
+          <input type="text" id="ticketCode" name="ticketCode" class="form-control inline-block" maxlength="{{ codeLength }}" ng-model="ticketCode" placeholder="Ticket Code"/>
+
+        </div>
+
+        <div class="col button-box">
+
+          <button class="btn btn-primary enter-code" ng-click="enterCode(ticketCode)">Enter</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ticket history section -->
+    <div class="tab-pane hidden" id="history">
+
+      <div class="input-wrapper row">
+
+        <div class="col col-75 input-box">
+
+          <input type="text" id="searchTickets" name="query" class="form-control inline-block" maxlength="{{ codeLength }}" ng-model="query" placeholder="Search"/>
+
+        </div>
+
+        <div class="col button-box">
+
+          <button class="btn btn-primary enter-search" ng-click="searchTickets(query)">Enter</button>
+
+        </div>
+
+      </div>
+
+    </div>
+    <!-- end sections -->
+  </div>
+
+  <!-- container for listing tickets with ticket code -->
+  <div class="list ticket-list-wrapper" ng-model="ticketOrders">
+
+    <!-- NG REPEAT -->
+    <div ng-repeat="ticket in ticketOrders">
+
+      <div class="card" ng-repeat="type in ticket.types">
+
+        <div class="item item-text-wrap row">
+
+          <div class="col col-75 check-in-info">
+            <h3> {{ type.name }} </h3>
+            <span class="ticket-event"> @ {{ ticket.eventName}} </span>
+            <span class="created-at ticket-creation"> {{ ticket.createdAt | date:"MMM. d, y" }} </span>
+
+            <div class="card-bottom">
+              <label class="admit-label"> Admit: </label>
+              <div class="ticket-quantity box">
+                <span ng-model="type.quantityCounter"> {{ type.quantityCounter }} </span>
+                <span>&nbsp; of &nbsp;</span>
+                <span ng-model="available" class="available"> {{ type.qty.available }} </span>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="col arrows-box">
+
+              <p class="check-in-up fa fa-caret-up" ng-click="increaseAdmit(type)"></p>
+              <p class="check-in-down fa fa-caret-down" ng-click="decreaseAdmit(type)"></p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+    <!-- NG REPEAT -->
+    <div class="card" ng-repeat="ticket in ticketOrderHistory" ng-model="ticketOrderHistory">
+
+      <div class="item item-text-wrap">
+
+        <div class="box-left">
+          <span class="bold ticket-code"> {{ ticket.code }} </span>
+          <span class="history-ticket-event"> @ {{ ticket.event.title }} </span>
+        </div>
+
+        <div class="box-right">
+          <span class="created-at ticket-creation"> {{ ticket.createdAt | date:"MMM. d, y"}} </span>
+          <p class="time-at ticket-creation" ng-if="ticket.eventTime.start"> Starts: {{ ticket.eventTime.start | parseTimeDataFilter | date:"h:mma" }} </p>
+        </div>
+
+        <div class="ticket-row-bottom box" ng-repeat="type in ticket.types">
+          <p class="ticket-name"> {{ type.name }} </p>
+          <span class="tickets-used"> {{ type.qty.used }} Used</span>
+          <span class="tickets-avail"> {{ type.qty.available}} Available</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Displays when there are no tickets found -->
+  <div class="no-friend-message friend-list-tab" ng-show="ticketError">
+    <h5 class="no-friend-name text-muted">No ticket orders with that code found.</h5>
+  </div>
+  <div class="no-friend-message friend-list-tab" ng-show="ticketHistoryError">
+    <h5 class="no-friend-name text-muted">No ticket orders found.</h5>
+  </div>
+
+  <div class="bottom-check-in btn btn-primary" ng-click="checkIn()" disabled="true">
+    <span class="text-centered centered">
+      Check In
+    </span>
+  </div>
+
+  <!-- white overlay for popup -->
+  <div class="popup-overlay" ng-show="checkedIn" >
+    <!-- success popup -->
+    <div class="check-in-popup" ng-show="checkedIn" ng-model="currentOrder">
+      <h4> Check In Succesful </h4>
+      <div class="popup-inner">
+        <h5 class="centered"> {{ currentOrder.event.title }} </h5>
+        <div ng-repeat="type in currentOrder.types">
+          <label>{{ type.name }}</label>
+          <br />
+          <span>X {{ type.qty.used }} Used </span>
+          <br />
+          <span>X {{ type.qty.available }} Remaining </span>
+          <br />
+        </div>
+        <p class="bottom-text">Reciept has been emailed to customer.</p>
+      </div>
+
+      <!-- return to check in view -->
+      <div class="button-bar padding-horizontal centered">
+        <button class="btn btn-primary return" ng-click="resetPopup()">Return to Check-In</button>
+      </div>
+    </div>
+  </div>
+  <div class="popup-overlay" ng-show="checkedInError">
+    <!-- error popup -->
+    <div class="check-in-popup" ng-show="checkedInError">
+      <h4> Check In Failed </h4>
+
+      <div class="popup-inner">
+        <h5 class="centered error-txt"> There are no more tickets available for this order or you did not specify how many people are being checked in.</h5>
+        <!-- <p class="centered"> Please select another ticket order </p> -->
+      </div>
+
+      <!-- return to check in view -->
+      <div class="button-bar padding-horizontal centered">
+        <button class="btn btn-primary return" ng-click="resetPopup()">Return to Check-In</button>
+      </div>
+    </div>
+  </div>
+</div>

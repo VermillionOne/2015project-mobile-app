@@ -1,0 +1,82 @@
+<div ng-controller="NotificationsController">
+
+  <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+    <div class = "suaray-menu-btn drawer-button">
+      <i onclick="supersonic.ui.drawers.open()" class="fa fa-bars"></i>
+    </div>
+    <div class="suaray-menu-title">
+      Notifications
+    </div>
+  </div>
+
+  <div class="notifications-list-sect">
+
+    <ul class="list list-unstyled friend-friends-list">
+
+      <li class="friends-friend-requests" ng-repeat="userRequest in friendRequestResults">
+
+        <div class="friends-friend-list-profile-image-container" ng-click="goToPublicProfile(userRequest)">
+
+          <div class="friends-friend-list-profile-image">
+            <img ng-src="{{userRequest.avatar}}" ng-if="userRequest.avatar">
+            <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="!userRequest.avatar"> <!-- Profile Image for Friend Entry -->
+          </div> <!-- end friends-friend-list-profile-image -->
+
+          <div class="friends-friend-active-circle-container">
+            <span class="friends-friend-active-circle"></span>
+          </div> <!-- end friends-friend-active-circle-container -->
+
+        </div> <!-- end friends-friend-list-profile-image-container -->
+
+        <div class="friends-friend-name-container">
+          <p class="friends-friend-name">{{ userRequest.firstName }}  {{ userRequest.lastName }}</p>
+          <p class="friends-friend-activity">Active</p>
+        </div> <!-- end friends-friend-name-container -->
+
+        <div ng-hide="approveFriend2" class="friends-accept-decline">
+
+          <button type="button" ng-click="acceptFriend(userRequest.id)" class="btn delete-friend btn-xs">Accept
+          </button>
+
+          <button type="button" ng-click="denyFriendRequest(userRequest.id, $index)" class="btn deny-friend btn-xs">Deny
+          </button>
+
+        </div>
+
+      </li> <!-- end friend request -->
+
+      <!-- Start of event invite request -->
+      <li class="friends-event-entry" ng-if="eventRequestResults.length > 0" ng-repeat="eventRequest in eventRequestResults">
+        <div class="friends-friend-list-profile-image-container">
+
+          <!-- Calendar icon to differentiate event requests from friend requests -->
+          <div class="notification-event-request" ng-click="updateRequest(eventRequest.event.id, eventRequest.id, $index); goToEventDetail(eventRequest.event.id);">
+            <a class="friends-friend-name">
+            <span class="fa fa-calendar fa-3x fa-fw notification-calendar"></span>
+            </a>
+          </div>
+
+        </div>
+
+        <div class="event-request-container" ng-click="updateRequest(eventRequest.event.id, eventRequest.id, $index); goToEventDetail(eventRequest.event.id);">
+
+          <!-- If user clicks on view event or close, the page will be updated to no longer show request -->
+          <p class="friends-friend-name">{{ eventRequest.event.title }}</p>
+          <p class="friends-friend-message"><span class="fa fa-map-marker fa-fw"></span>{{ eventRequest.event.city }}</p>
+          <p class="friends-friend-activity">{{ eventRequest.requester.firstName }} {{ eventRequest.requester.lastName }} has invited you to this event!</p>
+
+        </div>
+
+        <button type="button" ng-click="updateRequest(eventRequest.event.id, eventRequest.id)" class="close notifications-close" aria-label="Close"><span aria-hidden="true" style="color: #000;" class='close-request'>&times;</span></button>
+
+      </li>
+
+    </ul>
+
+    <!-- Displays when there are no notifications -->
+    <div class="no-friend-message" ng-hide="friendRequestResults.length || eventRequestResults.length">
+      <h5 class="no-friend-name text-muted">No Recent Activity</h5>
+    </div>
+
+  </div>
+</div>

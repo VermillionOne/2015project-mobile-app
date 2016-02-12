@@ -1,0 +1,195 @@
+/* Event Detail Sections */
+/* --------------------- */
+/* Event Details */
+.event-detail-info {
+  background-color: rgba(104,113,120,0.5);
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…BoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==);
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: -o-linear-gradient(top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.4) 100%);
+  position: absolute;
+  overflow: hidden;
+  font-weight: 700;
+  color: #fff;
+  text-transform: capitalize;
+  text-align: center;
+  padding: 80px 20px;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+.event-detail-info h3 {
+  font-size: 22px;
+}
+.event-detail-info p {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0px;
+}
+.suaray-menu-btn-right.search-dropdown-button {
+  margin-right: 10px;
+}
+
+/* Attendee */
+.attendee-container {
+  border-top: 1px solid #ccc;
+  height: 4em;
+}
+.attendee-count {
+  text-decoration: none;
+  text-align: center;
+  color: #253345;
+}
+.attendee-count.active {
+  color: #1a4c7c !important;
+  font-weight: 700;
+}.
+.attendee-number {
+  font-size: 20px;
+  display: block;
+}
+.attendee-status {
+  font-size: 12px;
+  display: block;
+}
+.attendee-padding {
+  padding-top: 4em;
+}
+.attendee-friends {
+  border-bottom: 1px solid #ccc;
+  font-weight: 300;
+  padding-left: 1.2em;
+}
+.attendee-users {
+  border-bottom: 1px solid #ccc;
+  font-weight: 300;
+  padding-left: 1.6em;
+  padding-top: 0.6em;
+}
+.attendee-list {
+  margin: 0;
+  overflow: auto;
+  width: 100%;
+  border-bottom: solid 1px #aaaaaa;
+}
+.attendee-margin {
+  margin-bottom: 3.5em;
+}
+/* Photos */
+.fixed-top-photo {
+  position: fixed;
+  z-index: 110;
+  top: 0;
+  left: 0;
+}
+.photo-admin {
+  text-align: center;
+  width: 100%;
+}
+/* RSVP */
+.event-detail-rsvp-pos {
+  padding: 0 15px 25px;
+}
+.no-rsvp-response,
+.maybe-rsvp-response,
+.yes-rsvp-response {
+  margin: 0px 0px 10px 0px;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 0px;
+  padding: 5px 0px 0px;
+  display:none;
+}
+.event-detail-rsvp-dtl {
+  font-size: 14px;
+  margin: 10px 0;
+  text-align: center;
+  font-weight: 300;
+  padding: 0 20px;
+  line-height: 1.2;
+}
+.event-detail-rsvp-dtl span {
+  text-transform: capitalize;
+  font-weight: 700;
+}
+.event-detail-rsvp-button-group.button-bar > .button:last-child,
+.event-detail-rsvp-button-group.button-bar > .button:first-child,
+.event-detail-rsvp-button-group.button-bar > .button:nth-child(2) {
+  border: 0px solid;
+  border-radius: 5px;
+  margin: 0px 5px;
+  font-weight: 500;
+  padding: 2px;
+}
+.event-detail-rsvp-button-group .button.disabled,
+.event-detail-rsvp-button-group .button[disabled] {
+  opacity: .75;
+}
+label.event-detail-rsvp-label {
+  font-weight: 300;
+  margin: 0px 5px 5px;
+  width: 80%;
+  padding: 0px 10px;
+  text-transform: capitalize;
+}
+div.event-detail-rsvp-pos select.event-detail-rsvp-select {
+  font: inherit;
+  font-weight: 500;
+  font-size: 1.2em;
+  border: 0px solid;
+  padding: 5px 10px;
+  margin: 0px;
+  width: 100%;
+  border-radius: 4px;
+  background: #F3F3F3;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.rsvp-select-dropdown-arrow,
+.tickets-select-dropdown-arrow{
+  width: 0;
+  height: 0;
+  content: '';
+  position: absolute;
+  right: 25px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid black;
+}
+.rsvp-select-dropdown-arrow{
+  margin: 14px 0px;
+}
+.tickets-select-dropdown-arrow{
+  margin: 21px 0px;
+}
+button.button.button-block.button-light.event-detail-rsvp-button {
+  border: 0px solid;
+  background: rgba(255,255,255,0);
+  margin: 10px 0px -15px;
+  font-weight: 300;
+  color: #5c5c5c;
+}
+.empty-detail {
+  padding: 6em 0;
+  text-align: center;
+}
+.empty-detail.ios {
+  padding: 7.5em 0;
+}
+.reservation-price {
+  float: right;
+  width: 35%;
+
+}
+textarea[name="reservation"] {
+  width: 100%;
+  float: left;
+  max-resolution: 450px;
+  margin: 0px 0px 10px;
+}

@@ -1,0 +1,40 @@
+.category-item {
+  font-weight: 500
+  text-transform: capitalize;
+  width: 95%;
+  margin: 10px auto 0px;
+  border-radius: 3px;
+  box-shadow: inset 0px 0px 10px rgba(0,0,0,0.05), inset 0px -60px 30px -30px rgba(0,0,0,.025);
+}
+.category-item:active {
+  background-color: #E4F5FF;
+  box-shadow: inset 0px 0px 10px rgba(0,0,0,0.05), inset 0px 60px 30px -30px rgba(0,0,0,.025);
+}
+.category.icon.fa {
+  font-size: 1.6em;
+}
+.category.icon {
+  text-shadow: 1px  0px  0px rgba(0,0,0,0.01),
+              -1px  0px  0px rgba(0,0,0,0.01),
+               0px -1px  0px rgba(0,0,0,0.01),
+               0px  1px  0px rgba(0,0,0,0.01),
+               0px  0px  1px rgba(0,0,0,0.01),
+               1px  1px  0px rgba(0,0,0,0.01),
+              -1px -1px  0px rgba(0,0,0,0.01),
+               1px -1px  0px rgba(0,0,0,0.01),
+              -1px  1px  0px rgba(0,0,0,0.01),
+               0px  0px 20px rgba(0,0,0,0.05),
+               0px  0px 10px rgba(0,0,0,0.045),
+               1px  1px  0px rgba(0,0,0,0.1);
+}
+.search-error {
+font-weight: 500;
+font-size: 1.25em;
+text-align: center;
+text-shadow: 0px 0px 3px rgb(0,0,0,.25);
+box-shadow: inset 0px 0px 10px rgba(0,0,0,0.05), inset 0px -60px 30px -30px rgba(0,0,0,.025);
+text-transform: capitalize;
+}
+.item.item-text-wrap.search-error {
+text-shadow: 0px -1px 1px rgba(0,0,0,.15);
+}

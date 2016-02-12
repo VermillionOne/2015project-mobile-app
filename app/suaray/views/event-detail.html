@@ -1,0 +1,874 @@
+<div ng-controller="EventController">
+
+  <div class="loading-overlay">
+    <div class="loading-login-top">
+      <div class="loader"></div>
+    </div>
+  </div>
+
+  <!-- *********************
+  Begin EVENT NAVBAR SECTION
+  ********************** -->
+
+  <div id="suaray-nav" ng-show="page === 'details'" ng-class="{ios: iOSStyles === true}">
+
+    <div class="suaray-menu-btn">
+      <super-navigate-back>
+        <i class="super-arrow-left-c"></i>
+      </super-navigate-back>
+    </div>
+
+    <div class="suaray-menu-title">
+      Event Detail
+    </div>
+
+    <div class="suaray-menu-btn-right">
+      <span class="fa fa-picture-o" ng-click="takeUserPhoto()" ng-show="isAttending === true"></span>
+      <span class="fa fa-ellipsis-v" ng-click="toggleEditDrawer()" ng-show="isOwner === true"></span>
+    </div>
+  </div>
+
+  <!-- *********************
+  Begin EVENT HEADER SECTION
+  ********************** -->
+
+  <div class="event-tabs">
+    <div class="event-tabs-row row">
+
+      <div class="col">
+        <a ng-click="showEvent()">
+          <i class="fa fa-building fa-2x"></i>
+        </a>
+      </div>
+
+      <div class="col" ng-if="event.meta.rsvp.enabled">
+        <a ng-click="showGoing()">
+          <i class="fa fa-users fa-2x"></i><br/>
+        </a>
+      </div>
+
+      <div class="col" ng-if="reviews === true">
+        <a ng-click="showReviews()">
+          <i class="fa fa-thumbs-up fa-2x"></i>
+        </a>
+      </div>
+
+      <div class="col">
+        <a ng-click="showComments()">
+          <i class="fa fa-comment fa-2x"></i><br/>
+        </a>
+      </div>
+
+      <div class="col">
+        <a ng-click="showPhotos()">
+          <i class="fa fa-photo fa-2x"></i>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- *********************
+  Begin SUARAY BODY SECTION
+  ********************** -->
+
+  <div class="list suaray-body" ng-show="page === 'details'">
+    <div id="event-detail-header">
+      <div class="event-detail-graphic">
+
+        <img ng-if="event.featuredPhoto" ng-src="{{event.featuredPhoto.url['460x275']}}" alt="..." >
+        <img ng-if="event.featuredPhoto == undefined" ng-src="/img/generating-460x275.png" alt="..." >
+
+        <div class="event-detail-info">
+          <h3>{{event.title}}</h3>
+          <p ng-click="showNativeMap()"><span class="fa fa-map-marker"></span>&nbsp;{{event.address1}}<br>
+          {{event.city}},&nbsp;{{event.state}}<br>
+          {{event.venue}}</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- *********************
+    Begin EVENT DETAILS SECTION
+    ********************** -->
+
+    <div id="event-detail-information">
+      <div class="event-detail-dta-sect">
+
+        <!-- If future date available, show date -->
+        <div ng-if="event.nextEvent != null">
+          <div class="event-detail-dta-titles event-detail-dta-border">Next Event<br/><span class="event-detail-dta-subtitles ">{{ event.nextEvent.start | parseTimeDataFilter | date:"MMMM d, y"}}</span></div>
+          <div class="event-detail-dta-titles">Time<br/><span class="event-detail-dta-subtitles">{{ event.nextEvent.start | parseTimeDataFilter | date:"h:mma"}}</span></div>
+        </div>
+
+        <!-- If future dates not available, show defualt message with search view link -->
+        <div ng-if="event.nextEvent == null">
+          <div class="event-no-future">No Upcoming Dates</br>
+            <span class="event-detail-dta-subtitles"> <a ng-click="showSearch()">Search</a> More Events!</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- *********************
+    Begin RSVP SECTION
+    ********************** -->
+
+    <div id="event-detail-rsvp" ng-if="event.nextEvent !== null && event.meta.rsvp.enabled">
+
+      <div class="event-detail-sub-page-title">RSVP</div>
+
+      <div class="event-detail-rsvp-pos">
+
+        <label class="event-detail-rsvp-label">Select Event Time:</label>
+        <div class="rsvp-select-dropdown-arrow"></div>
+        <select class="event-detail-rsvp-select" ng-model="eventTimeIdSelected" ng-change="callGetRsvp(eventTimeIdSelected, 'rsvp')" data-role="rsvp-event-date" name="eventTimeId">
+          <option ng-value="{{time.id}}" ng-selected="{{time.id === eventTimeIdSelected}}" ng-repeat="time in eventTimes">{{time.start | parseTimeDataFilter | date:'EEE. MMM d, y @ h:mm a'}}</option>
+        </select>
+      </div>
+
+      <div class="event-detail-rsvp-button-group button-bar padding-horizontal">
+
+        <a class="button event-detail-rsvp-button btn-success"
+          data-role="rsvp-yes"
+          ng-click="doUpdateRsvp(eventTimeIdSelected, 'yes')"
+          ng-hide="attendingStatus === 'no' || attendingStatus === 'maybe'"
+          ng-disabled="attendingStatus === 'yes'"><span ng-show="attendingStatus != 'yes'">Yes</span><span ng-show="attendingStatus === 'yes'">You Are Attending</span>
+        </a>
+        <!--
+          <button ng-click='doIsYes()' name="isYes" ng-model="isYes" class="button event-detail-rsvp-button btn-success">Yes</button>
+         -->
+        <a class="button event-detail-rsvp-button btn-warning"
+          data-role="rsvp-maybe"
+          ng-click="doUpdateRsvp(eventTimeIdSelected, 'maybe')"
+          ng-hide="attendingStatus === 'no' || attendingStatus === 'yes'"
+          ng-disabled="attendingStatus === 'maybe'"><span ng-show="attendingStatus != 'maybe'">Maybe</span><span ng-show="attendingStatus === 'maybe'">You Might Attend</span>
+        </a>
+        <!--
+          <button ng-click='doIsMaybe()' name="isMaybe" ng-model="isMaybe" class="button event-detail-rsvp-button btn-warning">Maybe</button>
+         -->
+        <a class="button event-detail-rsvp-button btn-danger"
+          data-role="rsvp-no"
+          ng-click="doUpdateRsvp(eventTimeIdSelected, 'no')"
+          ng-hide="attendingStatus === 'yes' || attendingStatus === 'maybe'"
+          ng-disabled="attendingStatus === 'no'"><span ng-show="attendingStatus != 'no'">No</span><span ng-show="attendingStatus === 'no'">You Are Not Attending</span>
+        </a>
+
+      </div>
+
+      <button ng-click='resetRsvpUi()' ng-show="changeRsvp === true" class="button button-block button-light event-detail-rsvp-button">Change My RSVP</button>
+
+    </div>
+
+    <!-- *********************
+    Begin ATTENDEE SECTION
+    ********************** -->
+
+    <!-- Shows only if next event has more than ten pople who have rsvp's maybe or yes -->
+    <div id="event-detail" class="row attendee-container" ng-if="totalAttendees >= 10">
+
+      <div class="attendee-count col col-50">
+        <a class="attendee-count" ng-click="showGoing()">
+          <span class="attendee-number">{{attendingYes}}</span>
+
+          <span class="attendee-status">going</span>
+        </a>
+      </div>
+
+      <div class="attendee-count col col-50">
+        <a class="attendee-count" ng-click="showMaybe()">
+          <span class="attendee-number">{{attendingMaybe}}</span>
+
+          <span class="attendee-status">maybe</span>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- *********************
+    Begin SOCIAL MEDIA INVITE SECTION
+    ********************** -->
+
+    <div id="event-detail-invite">
+      <div class="button-bar padding-horizontal">
+
+          <!-- Social media share list -->
+          <a class="button event-detail-social-sharing-btn facebook-button"
+           ng-click="social=true"
+           click-off="social=false"
+           title="Share on Facebook">
+          <i class="fa fa-share-alt fa-lg fa-fw"></i>&nbsp;Share
+        </a>
+
+        <!-- Invite by email or friends list -->
+        <a class="button event-detail-social-sharing-btn twitter-button"
+           ng-click="invite=true"
+           click-off="invite=false"
+           title="Share on Twitter">
+          <i class="fa fa-paper-plane fa-lg fa-fw"></i>&nbsp;Invite
+        </a>
+
+      </div>
+
+      <!-- white overlay for popup -->
+      <div class="popup-overlay" ng-show="social" >
+        <div class="social-popup" ng-show="social" >
+          <div class="button-bar padding-horizontal">
+          <!-- Facebook share button -->
+              <a class="button event-detail-social-sharing-btn facebook-button"
+               ng-click="facebookLink()"
+               title="Share on Facebook">
+              <i class="fa fa-facebook fa-lg fa-fw"></i> Facebook
+            </a>
+          </div>
+
+          <div class="button-bar padding-horizontal">
+            <!-- Twitter share button -->
+            <a class="button event-detail-social-sharing-btn twitter-button"
+               ng-click="twitterLink()"
+               title="Share on Twitter">
+              <i class="fa fa-twitter fa-lg fa-fw"></i> Twitter
+            </a>
+          </div>
+
+          <div class="button-bar padding-horizontal">
+            <!-- Google share button -->
+            <a class="button event-detail-social-sharing-btn google-plus-button"
+               ng-click="googleLink()"
+               title="Share on Google+">
+               <i class="fa fa-google-plus fa-lg fa-fw"></i> Google
+            </a>
+          </div>
+
+          <div class="button-bar padding-horizontal">
+            <!-- LinkedIn share button -->
+            <a class="button event-detail-social-sharing-btn linkedin-button" ng-class="{ios: iOSStyles === true}"
+               ng-click="linkedinLink()">
+               <i class="fa fa-linkedin fa-lg fa-fw" ng-class="{ios: iOSStyles === true}"></i> Linkedin
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- white overlay for popup -->
+      <div class="popup-overlay" ng-show="invite" >
+        <!-- Invite to event popup -->
+        <div class="social-popup" ng-show="invite" >
+
+          <!-- Invite by email -->
+          <div class="button-bar padding-horizontal">
+            <a class="button event-detail-social-sharing-btn linkedin-button" ng-click="inviteByEmail()">
+              <i class="fa fa-envelope fa-lg fa-fw social-icon-margin"></i>Via Email
+            </a>
+          </div>
+
+          <!-- Invite suaray friends -->
+          <div class="button-bar padding-horizontal">
+            <a class="button event-detail-social-sharing-btn linkedin-button" ng-class="{ios: iOSStyles === true}"
+               ng-click="showInviteFriends()">
+               <i class="fa fa-user-plus fa-lg fa-fw social-icon-margin"></i>Via Suaray
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- white overlay for popup -->
+      <div class="popup-overlay" ng-show="sendEmail" >
+        <!-- Invite via Email popup -->
+        <div class="social-popup" ng-show="sendEmail" >
+          <h5>Enter email address:</h5>
+          <div class="popup-inner">
+            <form id="email-invite-form" class="form" name="emailInviteForm" ng-hide="emailInviteSent === true">
+
+              <input type="email" class="form-control email-invite-input" ng-model="email" placeholder="somone@example.com" required />
+              <span class="error invite-email-error text-centered" ng-show="emailError === true">You must enter a valid email!</span>
+              <button type="submit" class="btn btn-primary event-detail-email-btn linkedin-button" ng-class="{ios: iOSStyles === true}" ng-click="sendInviteByEmail()">
+                 <i class="fa fa-share social-icon-margin"></i> Send Email
+              </button>
+
+            </form>
+
+            <div class="email-success" ng-show="emailInviteSent === true">
+              <p class="text-centered success-message-text">You have successfully sent an invite to <strong> {{ email }} </strong> and they should receive an email shortly!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- *********************
+    Begin DESCRIPTION SECTION
+    ********************** -->
+
+    <div id="event-detail-description">
+      <div class="event-detail-desc-title">Description</div>
+      <div class="event-detail-desc-dtl">{{event.description}}</div>
+    </div>
+
+    <!-- *********************
+    Begin MAP SECTION
+    ********************** -->
+
+    <div class="event-map-sect">
+      <div id="map"></div>
+      <div id='event-detail-loader'>
+        <span class='message'><i class="fa-li fa fa-spinner fa-pulse"></i></span>
+      </div>
+    </div>
+
+    <!-- *********************
+    Begin POLL SECTION
+    ********************** -->
+    <div ng-if="pollUserId === userId && polls === true">
+      <div class="poll-answer" id="event-detail-poll">
+
+        <div class="event-detail-poll-title">Polls
+        </div>
+
+        <div ng-repeat="poll in event.polls | limitTo: 1 ">
+          <div class="poll-sub-txt">{{ poll.question }}</div>
+            <div ng-repeat="choice in poll.choices">
+              <div class="poll-question">
+
+                <span class="poll-label-txt">{{choice.choice}}</span>
+                <span class="poll-label-txt-results">{{choice.votes.length}}</span>
+              </div>
+            </div>
+
+            <div class="event-detail-poll-button padding-horizontal">
+
+              <button ng-click="moveThrough(poll)" class="button button-positive button-block poll-vote-button">Next</button>
+            </div>
+          </div>
+    </div>
+  </div>
+
+  <!-- Checks if user has answered poll -->
+  <div ng-if="event.polls.length > 0 && polls === true">
+    <form ng-hide="!(event.polls | filter:pollText).length || userId == pollUserId">
+      <div class="poll-question" id="event-detail-poll">
+
+        <!-- Poll header and title -->
+        <div class="event-detail-poll-title">Polls</div>
+          <div ng-repeat="poll in event.polls | filter:pollText | limitTo: 1">
+
+            <!-- Poll question -->
+            <div class="poll-sub-txt">{{poll.question}}</div>
+              <div class="checkbox" ng-repeat="choice in poll.choices">
+
+                <!-- Checkbox for poll vote -->
+                <label>
+                  <input type="checkbox" ng-model="event.poll" ng-change="event.pollId=choice.pollId" id="event.poll" name="poll" ng-true-value="{{choice.id}}" ng-false-value="0">
+                </label>
+
+                <!-- Poll choice -->
+                <span class="poll-label-txt">{{choice.choice}}</span>
+              </div>
+
+              <div class="event-detail-poll-button padding-horizontal">
+
+                <!-- Submit button for poll to save and move to next -->
+                <button type="submit" ng-click="removePoll(poll)" class="btn btn-primary button button-block poll-vote-button">Cast Your Vote</button>
+              </div>
+          </div>
+          <!-- Message shows when polls are all answered -->
+          <div ng-show="!(event.polls | filter:pollText).length">
+            <div class="poll-sub-txt">Yay! You answered all the polls!</div>
+          </div>
+      </div>
+    </form>
+
+  </div>
+
+  <!-- User id returned with poll submission, shows confirmation -->
+  <div ng-show="userId === pollUserId && polls === true">
+    <div class="poll-question" id="event-detail-poll">
+
+      <!-- Poll header and message -->
+      <div class="event-detail-poll-title">Polls</div>
+      <div class="poll-sub-txt">Yay! Your vote has been submitted!</div>
+    </div>
+  </div>
+
+    <!-- *********************
+    Begin TICKET SECTION
+    ********************** -->
+
+    <form name="ticketForm" method="" data-role="ticketForm" novalidate ng-if="tickets">
+      <div id="event-detail-ticket" ng-if="event.ticketsInventory.length > 0 && ticketsEnabled > 0 && purchase !== false">
+
+        <div class="event-detail-ticket-title" ng-hide="reservations.length > 0">Tickets</div>
+        <div class="event-detail-ticket-title" ng-show="reservations.length > 0">Reservations</div>
+
+        <div class="event-detail-rsvp-pos">
+
+          <label class="event-detail-rsvp-label">Select Event Time:</label>
+          <div class="rsvp-select-dropdown-arrow"></div>
+          <select class="event-detail-rsvp-select" ng-model="eventTimeIdSelected" ng-change="callGetRsvp(eventTimeIdSelected, 'ticket')" data-role="ticket-event-date" name="ticketEventTimeId">
+            <option ng-value="{{time.id}}" ng-selected="{{time.id === eventTimeIdSelected}}" ng-repeat="time in eventTimes">{{ time.start | parseTimeDataFilter | date:'EEE. MMM d, y @ h:mm a' }}</option>
+          </select>
+        </div>
+
+        <!-- Normal Tickets -->
+        <div class="padding-horizontal" ng-repeat="ticket in event.ticketsInventory track by $index" ng-hide="reservations.length > 0">
+
+          <div class="row" ng-if="!ticket.isReservation && ticket.isEnabled">
+
+            <div class="col col-75 event-detail-token-title">
+              <p class="tick-head-text">{{ ticket.name }}</p>
+              <p class="tick-sub-text">{{ ticket.description }}</p>
+            </div>
+
+            <div class="col event-detail-token-check">
+              <label class="event-detail-token-price">${{ ticket.amount }}</label>
+              <div class="tickets-select-dropdown-arrow" ng-show="ticket.inventory > 0"></div>
+              <select ng-model="ticketQueue[$index]" ng-show="ticket.inventory > 0" ng-change="setTicketsPurchase()" data-role="ticketOrderQuantity" class="form-control event-detail-token-count">
+                <option value="{{ $index }}" ng-repeat="n in [] | range:ticket.inventory | limitTo:11">{{ $index }}</option>
+              </select>
+
+              <p class="ticket-sold-out" ng-show="ticket.inventory <= 0">Sold Out</p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Reservations -->
+        <div class="padding-horizontal" ng-repeat="ticket in reservations track by $index" ng-show="ticket.isEnabled === true" >
+
+          <div class="row">
+
+            <div class="col event-detail-token-title">
+
+              <p class="tick-head-text">{{ ticket.name }}</p>
+              <p class="tick-sub-text">{{ ticket.description }}</p>
+              <textarea class="tick-sub-textarea cc-card-info" name="reservation" data-role="reservationTextarea" ng-keyup="reservationMessageValue()" ng-model="ticket.reply" placeholder="Enter your message here."></textarea>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="event-detail-poll-button padding-horizontal">
+          <button type="button" ng-disabled="ticketForm.$pristine" ng-hide="reservations.length > 0" class="btn btn-primary button button-block" ng-click="goToTickets(event.id)">Purchase Tickets</button>
+          <button type="button" ng-show="reservations.length > 0" class="btn btn-primary button button-block" ng-click="goToTickets(event.id)">Send Request</button>
+        </div>
+
+      </div>
+    </form>
+
+    <!-- *********************
+    Begin RELATED SLIDER SECTION
+    ********************** -->
+
+    <div id="event-detail-related-events">
+      <div class="event-detail-related-sliders">
+        <div class="event-detail-related-slide-sect">
+
+          <div class="event-detail-related-pics-slide-title">Similar Events</div>
+
+          <div class = "event-slide-thumb">
+            <ul data-role="related-event-slider" >
+              <li class="event-detail-related-event" ng-if="event.featuredPhoto" ng-repeat="event in eventsWithTags | limitTo:6">
+                <img ng-click="goToEventDetail(event.id)" ng-src="{{event.featuredPhoto.url['114x88']}}">
+              </li>
+            </ul>
+          </div>
+
+          <!-- Displays when there are no events -->
+          <div class="no-friend-message" ng-hide="eventsWithTags.length">
+            <h5 class="no-friend-name text-muted">No Related Events</h5>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- *********************
+  Begin GOING ANTENDEE SECTION
+  ********************** -->
+
+  <!-- Tag below begins Going Attendee Section -->
+  <div ng-show="page === 'going'">
+
+    <!-- Top tab bar that displays going and maybe rsvp's -->
+    <div class="item item-input-inset event-detail-review-input-box fixed-top-comments" ng-class="{ios: iOSStyles === true}">
+
+      <div class="attendee-count attendee-going col col-50 active">
+        <a class="attendee-count" ng-click="showGoing()">
+          <span class="attendee-status">GOING</span>
+        </a>
+      </div>
+
+      <div class="attendee-count attendee-maybe col col-50">
+        <a class="attendee-count" ng-click="showMaybe()">
+          <span class="attendee-status">MAYBE</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="attendee-padding">
+      <!-- Start of friends attendee list -->
+      <ul class="list list-unstyled friend-friends-list">
+
+        <li class="attendee-list" ng-repeat="attendee in attendingFriends" ng-click="goToPublicProfile(attendee)">
+
+          <div class="friends-friend-list-profile-image-container">
+            <div class="friends-friend-list-profile-image">
+
+              <img ng-src="{{attendee.avatar}}" ng-if="attendee.avatar">
+              <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="!attendee.avatar">
+
+            </div>
+
+            <div class="friends-friend-active-circle-container">
+              <span class="friends-friend-active-circle"></span>
+            </div>
+
+          </div>
+
+          <div class="friends-friend-name-container">
+            <p class="friends-friend-name">{{ attendee.firstName }} {{ attendee.lastName }}</p>
+          </div>
+
+        </li>
+
+      </ul>
+
+      <ul class="list list-unstyled friend-friends-list attendee-margin">
+
+        <!-- Displays when there are no attendees who have rsvp'd yes -->
+        <div class="no-friend-message attendee-padding" ng-if="attendingFriends.length === 0" ng-model="attendingYes" ng-hide="attendingUser">
+          <h5 class="no-friend-name text-muted">No One Has Said They Will Be Attending</h5>
+          <h5 class="no-friend-name text-muted">Invite Your Friends <a ng-click="showInviteFriends()">Here</a></h5>
+        </div>
+
+      </ul>
+    </div>
+  </div>
+
+  <!-- *********************
+  Begin MAYBE ATTENDEE SECTION
+  ********************** -->
+
+  <!-- Tag below begins Maybe Attendee Section -->
+  <div ng-show="page === 'maybe'">
+
+    <!-- Top tab bar that displays going and maybe rsvp's -->
+    <div class="item item-input-inset event-detail-review-input-box fixed-top-comments" ng-class="{ios: iOSStyles === true}">
+
+      <div class="attendee-count attendee-going col col-50">
+        <a class="attendee-count" ng-click="showGoing()">
+          <span class="attendee-status">GOING</span>
+        </a>
+      </div>
+
+      <div class="attendee-count attendee-maybe col col-50">
+        <a class="attendee-count" ng-click="showMaybe()">
+          <span class="attendee-status">MAYBE</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="attendee-padding">
+      <!-- Start of maybe attendee friends list -->
+      <ul class="list list-unstyled friend-friends-list">
+
+        <li class="attendee-list" ng-repeat="attendee in maybeFriends" ng-click="goToPublicProfile(attendee)">
+
+          <div class="friends-friend-list-profile-image-container">
+            <div class="friends-friend-list-profile-image">
+
+              <img ng-src="{{attendee.avatar}}" ng-if="attendee.avatar">
+              <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="!attendee.avatar">
+
+            </div>
+
+            <div class="friends-friend-active-circle-container">
+              <span class="friends-friend-active-circle"></span>
+            </div>
+
+          </div>
+
+          <div class="friends-friend-name-container">
+            <p class="friends-friend-name">{{ attendee.firstName }} {{ attendee.lastName }}</p>
+          </div>
+
+        </li>
+
+      </ul>
+
+      <!-- Start of maybe attendee user list -->
+      <ul class="list list-unstyled friend-friends-list attendee-margin">
+
+        <!-- Displays when there are no attendees who have rsvp'd maybe -->
+        <div class="no-friend-message attendee-padding" ng-if="maybeFriends.length === 0">
+          <h5 class="no-friend-name text-muted">No One Has Said They May Be Attending</h5>
+          <h5 class="no-friend-name text-muted">Invite Your Friends <a ng-click="showInviteFriends()">Here</a></h5>
+        </div>
+
+      </ul>
+
+    </div>
+
+  </div>
+
+  <!-- Tag below begins Review Section -->
+  <div ng-show="page === 'reviews'">
+
+    <!-- *********************
+    Begin REVIEWS SECTION
+    ********************** -->
+
+
+    <div class="list event-detail-review-input-container" >
+      <form data-role="update-reviews" name="userReviews">
+
+        <div class="item item-input-inset event-detail-review-input-box fixed-top-comments" ng-class="{ios: iOSStyles === true}">
+          <label class="item-input-wrapper event-detail-review-input-label">
+            <input required type="text" ng-model="event.review" id="event.review" name="review" placeholder="Write a review...">
+          </label> <!-- END REVIEW Input | item-input-wrapper -->
+        </div> <!-- END  | list event-detail-review-input-container -->
+
+        <div class="eventReviewStarRating fixed-top-reviews" ng-class="{ios: iOSStyles === true}">
+          <div class="row">
+            <div class="col-xs-6">
+              <div class = "rating-star-sect">
+
+                <span class="rating">
+                  <input type="radio" class="rating-input" ng-model="event.rating" id="rating-input-1-5" value="10" name="rating"/>
+                  <label for="rating-input-1-5" class="rating-star"></label>
+
+                  <input type="radio" class="rating-input" ng-model="event.rating" id="rating-input-1-4" value="8" name="rating"/>
+                  <label for="rating-input-1-4" class="rating-star"></label>
+
+                  <input type="radio" class="rating-input" ng-model="event.rating" id="rating-input-1-3" value="6" name="rating"/>
+                  <label for="rating-input-1-3" class="rating-star"></label>
+
+                  <input type="radio" class="rating-input" ng-model="event.rating" id="rating-input-1-2" value="4" name="rating"/>
+                  <label for="rating-input-1-2" class="rating-star"></label>
+
+                  <input type="radio" class="rating-input" ng-model="event.rating" id="rating-input-1-1" value="2" name="rating"/>
+                  <label for="rating-input-1-1" class="rating-star"></label>
+                </span>
+
+              </div>
+            </div>
+
+            <div class="col-xs-6">
+              <button type="submit" ng-disabled="userReviews.$invalid" class="btn btn-primary btn-sm btn-block">
+                Submit Review
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </form>
+
+    </div> <!-- END of Review Container | event-detail-review-container-->
+
+    <div id="event-detail-review" class="reviews-margin" ng-if="event.reviews.length > 0 " ng-class="{ios: iOSStyles === true}">
+      <div class="event-detail-review-container">
+
+        <ul class="list padding-horizontal event-detail-reviews-list-container">
+
+          <li class="item item-avatar event-detail-review-item" ng-repeat="review in event.reviews | orderBy:'-id' | limitTo:minReviews" ng-click="goToPublicProfile(review.user)">
+            <img ng-src="{{review.user.avatar}}" ng-if="review.user.avatar">
+            <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="!review.user.avatar">  <!-- COMMENTER PROFILE IMAGE -->
+            <h2 class="event-comment-name">{{review.user.firstName}}&nbsp;{{review.user.lastName}}</h2> <!-- COMMENTER NAME -->
+            <p>{{review.review}}</p> <!-- COMMENT BODY  -->
+            <p class="event-comment-timestamp"><i class="fa fa-clock-o"></i>&nbsp;{{review.createdAt | parseTimeDataFilter | date:'EEE. MMM d, y @ h:mm a'}}
+              <div class='rating_bar'>
+                <div class='rating-stars' style='width: {{review.rating}}0%;'></div>
+              </div>
+            </p>
+          </li> <!-- END First REVIEW | item item-avatar event-detail-review-first-item  -->
+
+          <!-- BEGIN More-less buttons for Reviews -->
+          <div class="button-bar">
+            <button class="button button-clear button-positive" ng-click="minReviews = minReviews + 10">Show more</button>
+            <a href="#event-reviews-title" class="button button-clear button-assertive" ng-click="minReviews = 10">Show less</a>
+          </div> <!-- END More-less buttons for Reviews feed| button-bar -->
+
+        </ul> <!-- END REVIEW List | list event-detail-review-list-container -->
+
+      </div>
+    </div>
+
+  </div>
+
+  <div ng-show="page === 'eventPhotos'">
+    <!-- *********************
+    Begin PHOTOS EVENT SLIDER SECTION
+    ********************** -->
+    <div ng-show="event.photos.length > 0" class="event-photos-container" ng-model="event.photos">
+      <!-- added carousel call so this is actual slider -->
+      <div class="list card" ng-repeat="photo in event.photos">
+        <div class="item item-avatar" >
+          <img ng-src="{{auth.avatar}}" ng-if="auth.avatar">
+          <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="auth.avatar === undefined">
+          <h2>{{event.title}}</h2>
+          <p>{{photo.createdAt}}</p>
+        </div>
+        <div class="item item-image">
+          <img ng-src="{{photo.url['320x440']}}">
+        </div>
+
+      </div>
+
+    </div>
+    <div ng-if="event.photos.length === 0">
+      <div class="empty-detail" ng-class="{ios: iOSStyles === true}">
+        <h5 class="no-friend-name text-muted">There Are No Photos For This Event... Yet!</h5>
+      </div>
+    </div>
+
+  </div>
+
+  <div ng-show="page === 'comments'">
+
+  <!-- *********************
+  Begin COMMENTS SECTION
+  ********************** -->
+
+    <!-- Input for comments -->
+    <div class="list">
+      <form data-role="update-comments" name="userComments">
+
+        <input type="hidden" name="eventId" value="{{ event.id }}">
+
+        <div class="item item-input-inset fixed-top-comments" ng-class="{ios: iOSStyles === true}">
+
+          <label class="item-input-wrapper">
+            <input type="text" ng-model="event.comment" id="event.comment" name="comment" placeholder="Write a comment..."> <!-- COMMENT INPUT -->
+          </label>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Default message if no comments exist -->
+    <div ng-if="event.comments.length == 0">
+      <div class="empty-detail">
+        <h5 class="no-friend-name text-muted">Be The First To Comment On This Event!</h5>
+      </div>
+    </div>
+
+    <!-- Displays previously input comments -->
+    <div id="event-detail-comments" class="comments-margin" ng-if="event.comments.length > 0 " ng-class="{ios: iOSStyles === true}">
+      <div class="event-comments-container">
+
+        <div class="list event-comments-list-container">
+          <div class="item item-avatar event-comment-item" ng-repeat="comment in event.comments  | orderBy:'-id' | limitTo:minComments" ng-click="goToPublicProfile(comment.user)">
+            <img ng-src="{{comment.user.avatar}}" ng-if="comment.user.avatar">
+            <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="!comment.user.avatar"> <!-- COMMENTER PROFILE IMAGE -->
+            <h2 class="event-comment-name">{{comment.user.firstName}}&nbsp;{{comment.user.lastName}}</h2> <!-- COMMENTER NAME -->
+            <p>{{comment.comment}}</p> <!-- COMMENT BODY  -->
+            <p class="event-comment-timestamp"><i class="fa fa-clock-o"></i>&nbsp;{{comment.createdAt | parseTimeDataFilter | date:'EEE. MMM d, y @ h:mm a'}}</p>
+          </div> <!-- END COMMENT template | item item-avatar event-comment-first-item -->
+        </div>
+
+          <!-- BEGIN More-less buttons for Comments -->
+        <div class="button-bar">
+          <button class="button button-clear button-positive" ng-click="minComments = minComments + 10">Show more</button>
+          <a href="#event-comments-title" class="button button-clear button-assertive" ng-click="minComments = 10">Show less</a>
+        </div> <!-- END More-less buttons for Twitter feed| button-bar -->
+      </div>
+    </div>
+
+  </div>
+
+    <!-- *********************
+    Begin INVITE FRIENDS SECTION
+    ********************** -->
+  <div ng-show="page === 'invite-friends'" class="event-suaray-body">
+    <div id="suaray-nav" ng-class="{ios: iOSStyles === true}">
+      <div class="suaray-menu-btn">
+        <!-- Hides invite section -->
+        <span ng-click="showEvent()" class="icon super-arrow-left-c"></span>
+      </div>
+
+      <div class="suaray-menu-title">
+        Invite Your Friends
+      </div>
+    </div>
+
+    <!-- Start of friends list -->
+    <ul class="list list-unstyled friend-friends-list">
+
+      <li class="friends-friend-entry" ng-repeat="friend in friendResults">
+        <div class="friends-friend-list-profile-image-container">
+          <div class="friends-friend-list-profile-image">
+
+            <!-- Friends avatar or default -->
+            <img ng-src="{{friend.avatar}}" ng-if="friend.avatar">
+            <img ng-src="/img/profile_avatar_placeholder.jpeg" ng-if="!friend.avatar">
+
+          </div>
+
+          <div class="friends-friend-active-circle-container">
+            <span class="friends-friend-active-circle"></span>
+          </div> <!-- end friends-friend-active-circle-container -->
+
+        </div>
+
+        <div class="friends-friend-name-container">
+          <p class="friends-friend-name">{{ friend.firstName }} {{ friend.lastName }}</p>
+          <p class="friends-friend-activity">Active</p>
+        </div> <!-- end friends-friend-name-container -->
+
+        <!-- Invite button for individual friends -->
+        <div class="invite-event" >
+          <div class="friend-check" ng-class="{ios: iOSStyles === true}">
+            <div class="suaray-menu-btn-right">
+
+              <!-- When friend invitation sent, button is disabled and displays 'Sent' -->
+              <button ng-click="doSendInvite(friend.id); friend.selected=!friend.selected"   for="{{ friend.id }}" ng-model="requestBtn" class="button button-small send-invites" ng-disabled="friend.selected">
+                <!-- <span ng-hide="requestBtn">Send</span> -->
+                <span>{{friend.selected?'Sent':''}} {{!friend.selected?'Send':''}}</span>
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+      </li>
+
+      <!-- Displays when there are no friends -->
+      <div class="no-friend-message" ng-hide="friendResults.length">
+        <h5 class="no-friend-name text-muted">Put Your Friends Here, So You Can Party With Them There!</h5>
+      </div>
+
+    </ul>
+  </div>
+  <div class="event-drawer suaray-drawer">
+
+    <div class="event-drawer-btn-list" ng-click="editEvent()">
+      <div class="event-drawer-txt drawer-txt">DETAILS</div>
+    </div>
+
+    <div class="event-drawer-btn-list" ng-click="editEventTickets()" ng-if="tickets">
+      <div class="event-drawer-txt drawer-txt">TICKETS</div>
+    </div>
+
+    <div class="event-drawer-btn-list" ng-click="editEventPolls()" ng-if="polls">
+      <div class="event-drawer-txt drawer-txt">POLLS</div>
+    </div>
+
+    <div class="event-drawer-btn-list" ng-click="editEventPhotos()" ng-if="event.meta.photos.enabled">
+      <div class="event-drawer-txt drawer-txt">PHOTOS</div>
+    </div>
+
+    <div class="event-drawer-btn-list" ng-click="showAnalytics()" ng-if="analytics">
+      <div class="event-drawer-txt drawer-txt">ANALYTICS</div>
+    </div>
+  </div>
+</div>
+<script src="/components/evaporatejs/evaporate.js"></script>

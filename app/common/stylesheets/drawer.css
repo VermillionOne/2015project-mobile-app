@@ -1,0 +1,146 @@
+/**************************************
+ *  Drawer
+ *************************************/
+.suaray-drawer {
+  overflow: auto;
+  background-color: #3496cf;
+  font-family: 'Raleway', sans-serif;;
+  padding: 0px 0px 0px 20px;
+}
+.suaray-drawer ul li {
+  background-color: #3496cf;
+  color: #fff;
+  padding: 22px;
+}
+.drawer-profile-link {
+  overflow: auto;
+  position: relative;
+  width: 100%;
+  display: block;
+}
+.drawer-btn-list {
+  padding: 0px 0px 0px 0px;
+  color: #fff;
+  width: 100%;
+  font-size: 16px;
+  margin: 15px 0px;
+  overflow: hidden;
+}
+.drawer-btn-list img {
+  height: 80%;
+}
+.drawer-btn-list .help-icon {
+  position: relative;
+  left: 4px;
+}
+.drawer-badge {
+  margin-left: 20px;
+}
+.drawer-search-sect {
+  width: 100%;
+}
+.drawer-icon {
+  float: left;
+  margin: 0 20px 0 0;
+  height: 20px;
+  width: 20px;
+  color: #ffffff;
+  font-size: 20px;
+}
+.drawer-icon i {
+  color: #fff;
+}
+.drawer-txt {
+  float: left;
+  font-weight: 300;
+  padding: 2px 0 0 0;
+}
+.drawer-profile-pic {
+  width: 25%;
+  margin: 20px 0px 0px 0px;
+  overflow: hidden;
+  display: block;
+  float: left;
+}
+.drawer-profile-pic img {
+  width: 100%;
+  -webkit-border-radius: 360px 360px 360px 360px;
+  border-radius: 360px 360px 360px 360px;
+}
+.drawer-name-txt {
+  text-align: left;
+  color: #fff;
+  font-size: 1em;
+  text-transform: capitalize;
+  font-weight: 300;
+  width: 70%;
+  float: left;
+  margin: 17% 0px 0px 10px;
+}
+.drawer-name-txt a{
+  text-decoration: none;
+  color: #ffffff;
+}
+.drawer-name-txt a.active{
+  text-decoration: none;
+  color: #ffffff;
+}
+.drawer-search-sect form {
+  border-radius: 3px;
+  overflow: hidden;
+  width: 100%;
+}
+input.drawer-search {
+  border-radius: 3px;
+  font-weight: 300;
+}
+.drawer-search-sect input[type="text"] {
+  padding: 0px 10px;
+  width: 65%;
+}
+.drawer-city-txt {
+  text-align: center;
+  color: #8ca8ca;
+  font-size: 12px;
+  margin: 0 0 20px 0;
+  font-weight: 300;
+  width: 240px;
+}
+/* Event Dropedown Menu / Drawer */
+/* ============================= */
+.event-drawer {
+  display: none;
+  position: fixed;
+  top: 50px;
+  right: 0;
+  width: 200px;
+  font-size: 14px;
+  padding: 5px 0;
+  z-index: 1001;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  list-style: outside none none;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+  background-clip: padding-box;
+  background-color: #ffffff !important;
+}
+.event-drawer-txt {
+  width: 100%;
+  color: #3496cf; 
+  text-align: left;
+  text-transform: uppercase;
+  padding: 2px 20px !important;
+}
+.event-drawer-btn-list {
+  color: #3496cf;
+  width: 100%;
+  font-size: 16px;
+  margin: 15px 0;
+  padding: 0px 0px 0px 0px;
+}
+.event-drawer .event-drawer-btn-list:active .event-drawer-txt,
+.event-drawer .event-drawer-btn-list:focus {
+  background: #3496cf !important;
+  color: #ffffff !important;
+}
